@@ -36,7 +36,7 @@ export default function Home() {
       const hh = height / 2;
       const x = utils.clamp(e.clientX - left - hw, -hw, hw);
       const y = utils.clamp(e.clientY - top - hh, -hh, hh);
-      animatable.x(x / 10); // divide for subtler motion
+      animatable.x(x / 10);
       animatable.y(y / 10);
     };
 
