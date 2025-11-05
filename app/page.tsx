@@ -12,8 +12,8 @@ export default function Home() {
       className="flex flex-col justify-center items-center min-h-screen font-mono"
       style={{ backgroundImage: "url('/diamond-sunset-bg.svg')" }}
     >
-      <section className="border w-100 h-100 mx-auto rounded-lg overflow-hidden m-4">
-        <img src="/cat.jpeg" className="w-full h-full object-cover"></img>
+      <section className="border w-100 h-125 mx-auto rounded-lg overflow-hidden m-4">
+        <img src="/cat.jpeg" className="w-full h-full object-scale"></img>
       </section>
       <section className="w-155 mx-auto text-center rounded-lg border">
         <div className="border px-4">
@@ -52,9 +52,9 @@ export default function Home() {
           </Button>
         </div>
         <p className="border m-4">
-          I'm a Computing and Financial Management student at the University
+          Hey, I'm Vincent, a Computing and Financial Management student at the University
           of Waterloo with hands-on experience in software development and data
-          projects. Last summer, I worked on ETL Pipelines and automating
+          projects. Last Summer, I worked on ETL Pipelines and automating
           workflows at{" "}
           <a
             href="https://www.usepepper.com/"
