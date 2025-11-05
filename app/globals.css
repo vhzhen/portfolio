@@ -47,7 +47,7 @@ body {
 }
 
 .btn {
-  @apply border w-20 mx-1 px-13;
+  @apply w-20 mx-1 px-13;
 }
 
 :root {
