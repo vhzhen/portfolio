@@ -19,10 +19,17 @@ export default function Home() {
   useEffect(() => {
     const drag = createDraggable(".crown", {
       container: ".draggable-zone",
-      snap: 80,
+      snap: 50,
+      releaseEase: "out(3)",
       onRelease: () => {
         if ((drag.x) >= -200 && drag.x <= 200) {
-          console.log("Matched!") // test
+          console.log("Matched!");
+
+
+
+          animate(".crown", {x: "-5",y :"80"})
+          drag.x = -5;
+          drag.y = 80;
         }
       }
       
