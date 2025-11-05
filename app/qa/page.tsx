@@ -15,6 +15,8 @@ import {
   spring,
 } from "animejs";
 
+import Confetti from "@/lib/confetti";
+
 export default function Home() {
   useEffect(() => {
     const drag = createDraggable(".crown", {
@@ -22,17 +24,14 @@ export default function Home() {
       snap: 50,
       releaseEase: "out(3)",
       onRelease: () => {
-        if ((drag.x) >= -200 && drag.x <= 200) {
+        if (drag.x >= -200 && drag.x <= 200) {
           console.log("Matched!");
 
-
-
-          animate(".crown", {x: "-5",y :"80"})
+          animate(".crown", { x: "-5", y: "80" });
           drag.x = -5;
           drag.y = 80;
         }
-      }
-      
+      },
     });
   }, []);
 
@@ -42,6 +41,7 @@ export default function Home() {
       style={{ backgroundImage: "url('/diamond-sunset-bg.svg')" }}
     >
       <img
+        id="id_crown"
         src="/crown.webp"
         className="crown draggable w-40 h-25 top-1/2 left-0 align-left"
         alt="crown"
