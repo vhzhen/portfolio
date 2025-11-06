@@ -43,6 +43,7 @@ export default function Home() {
         }
 
         console.log("bounce resumed");
+        console.log(drag.x);
       },
       onGrab: () => {
         bounce.pause();
@@ -52,29 +53,33 @@ export default function Home() {
 
   return (
     <div
-      className="flex flex-col justify-center items-center min-h-screen font-mono draggable-zone"
+      className="flex flex-row justify-center items-center items-center min-h-screen draggable-zone w-full h-full"
       style={{ backgroundImage: "url('/diamond-sunset-bg.svg')" }}
     >
-      <div className="snap-to-head" draggable="false">
-        <img
-          id="id_crown"
-          src="/crown.webp"
-          className="bounce draggable w-40 h-25 top-1/2 left-0 align-left"
-          alt="crown"
-          draggable="false"
-        />
-      </div>
+      <section id="left-section" className="hidden md:flex flex-col justify-center items-center min-h-[auto] border w-1/4 h-full">
+        <div className="snap-to-head border w-40 h-25">
+          <img
+            src="/crown.webp"
+            className="bounce snap-to-head draggable w-40 h-25 top-1/2 left-0 align-left"
+            alt="crown"
+            draggable="false"
+          />
+        </div>
+      </section>
 
-      <div className="">
-        <section className="border w-100 h-125 mx-auto rounded-lg overflow-hidden m-4">
+      <section
+        id="middle-section"
+        className="flex flex-col justify-center items-center font-mono draggable-zone w-full md:w-2/4 border"
+      >
+        <section className="border rounded-lg overflow-hidden m-4 w-[clamp(150px,70%,400px)] sm:w-[clamp(150px,80%,400px)]"> 
           <img
             src="/cat.jpeg"
-            className="w-full h-full object-scale"
+            className=""
             draggable="false"
           ></img>
         </section>
-        <section className="w-180 mx-auto text-center rounded-lg">
-          <div className=" px-4">
+        <section className="flex flex-col items-center mx-auto my-auto text-center rounded-lg border">
+          <div className="px-4">
             <Button
               className="btn"
               variant="outline"
@@ -113,7 +118,7 @@ export default function Home() {
               Resume
             </Button>
           </div>
-          <p className="m-4 rounded-lg">
+          <p className="sm:w-[clamp(150px,80%,700px)] text-center text-sm md:text-md lg:text-lg m-4 rounded-lg border">
             Hey! I'm Vincent, a Computing and Financial Management student at
             the University of Waterloo with hands-on experience in software
             development and data projects. Last summer, I worked on ETL
@@ -128,7 +133,12 @@ export default function Home() {
             . When I'm not coding, you can find me chilling with my two cats.
           </p>
         </section>
-      </div>
+      </section>
+
+      <section
+        id="right-section"
+        className="hidden md:flex flex-col justify-center items-center min-h-[auto] border w-1/4 h-full"
+      ></section>
     </div>
   );
 }
