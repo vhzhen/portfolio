@@ -15,22 +15,37 @@ import {
   spring,
 } from "animejs";
 
-import Confetti from "@/lib/confetti";
-
 export default function Home() {
   useEffect(() => {
-    const drag = createDraggable(".crown", {
-      container: ".draggable-zone",
-      snap: 50,
-      releaseEase: "out(3)",
-      onRelease: () => {
-        if (drag.x >= -200 && drag.x <= 200) {
-          console.log("Matched!");
+    const bounce = animate(".bounce", {
+      y: ["1vh", "-1vh"],
+      loop: true,
+      alternate: true,
+      duration: 400,
+    });
 
-          animate(".crown", { x: "-5", y: "80" });
-          drag.x = -5;
-          drag.y = 80;
+    const drag = createDraggable(".snap-to-head", {
+      container: ".draggable-zone",
+      onRelease: () => {
+        if (drag.x >= -150 && drag.x <= 150 && drag.y >= 0 && drag.y <= 200) {
+          console.log("snapping element to head!");
+
+          bounce.pause();
+          drag.disable(); // disable .snap-to-head once it has locked onto the image
+
+          animate(".snap-to-head", { x: "-5", y: "80" });
+          drag.setX(-5);
+          drag.setY(80);
+
+          drag.enable();
+        } else {
+          bounce.resume();
         }
+
+        console.log("bounce resumed");
+      },
+      onGrab: () => {
+        bounce.pause();
       },
     });
   }, []);
@@ -40,12 +55,16 @@ export default function Home() {
       className="flex flex-col justify-center items-center min-h-screen font-mono draggable-zone"
       style={{ backgroundImage: "url('/diamond-sunset-bg.svg')" }}
     >
-      <img
-        id="id_crown"
-        src="/crown.webp"
-        className="crown draggable w-40 h-25 top-1/2 left-0 align-left"
-        alt="crown"
-      />
+      <div className="snap-to-head" draggable="false">
+        <img
+          id="id_crown"
+          src="/crown.webp"
+          className="bounce draggable w-40 h-25 top-1/2 left-0 align-left"
+          alt="crown"
+          draggable="false"
+        />
+      </div>
+
       <div className="">
         <section className="border w-100 h-125 mx-auto rounded-lg overflow-hidden m-4">
           <img
@@ -97,7 +116,7 @@ export default function Home() {
           <p className="m-4 rounded-lg">
             Hey! I'm Vincent, a Computing and Financial Management student at
             the University of Waterloo with hands-on experience in software
-            development and data projects. Last Summer, I worked on ETL
+            development and data projects. Last summer, I worked on ETL
             Pipelines and automating workflows at{" "}
             <a
               href="https://www.usepepper.com/"
