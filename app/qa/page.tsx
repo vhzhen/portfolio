@@ -6,7 +6,7 @@ import { FileText } from "lucide-react";
 import { Code } from "lucide-react";
 import { Mail } from "lucide-react";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import {
   animate,
   createAnimatable,
@@ -16,6 +16,9 @@ import {
 } from "animejs";
 
 export default function Home() {
+  const catRef = useRef(null);
+  const crownRef = useRef(null);
+
   useEffect(() => {
     const bounce = animate(".bounce", {
       y: ["1vh", "-1vh"],
@@ -27,23 +30,43 @@ export default function Home() {
     const drag = createDraggable(".snap-to-head", {
       container: ".draggable-zone",
       onRelease: () => {
-        if (drag.x >= -150 && drag.x <= 150 && drag.y >= 0 && drag.y <= 200) {
-          console.log("snapping element to head!");
+        // used to get the current coordinates of the cat
+        const cat = catRef.current.getBoundingClientRect();
+        const crown = crownRef.current.getBoundingClientRect();
 
+        const catX = ((cat.left + cat.right)/2)
+        const catY = (cat.top + 77)
+
+        const crownY = (crown.bottom);
+        const crownX = ((crown.left + crown.right)/2)
+
+        const targetX = drag.x + (catX - crownX);
+        const targetY = drag.y + (catY - crownY);
+
+        console.log("crownX: ", crownX)
+        console.log("crownY: ", crownY)
+
+        console.log("targetX: ", targetX)
+        console.log("targetY: ", targetY)
+        console.log("coords: ",drag.coords)
+
+        if (crownY >= (catY - 100) && crownY <= (catY + 100) && crownX >= (catX - 100) && crownX <= (catX + 100)) {
+          console.log("snapping element to head!");
+          
           bounce.pause();
           drag.disable(); // disable .snap-to-head once it has locked onto the image
 
-          animate(".snap-to-head", { x: "-5", y: "80" });
-          drag.setX(-5);
-          drag.setY(80);
+          animate(".snap-to-head", { x: targetX, y: targetY});
+          drag.setX(targetX);
+          drag.setY(targetY);
 
           drag.enable();
         } else {
           bounce.resume();
         }
 
-        console.log("bounce resumed");
-        console.log(drag.x);
+        //console.log("bounce resumed"); // test
+        //console.log(drag.x); // test
       },
       onGrab: () => {
         bounce.pause();
@@ -56,11 +79,14 @@ export default function Home() {
       className="flex flex-row justify-center items-center items-center min-h-screen draggable-zone w-full h-full"
       style={{ backgroundImage: "url('/diamond-sunset-bg.svg')" }}
     >
-      <section id="left-section" className="hidden md:flex flex-col justify-center items-center min-h-[auto] border w-1/4 h-full">
-        <div className="snap-to-head border w-40 h-25">
+      <section
+        id="left-section"
+        className="hidden md:flex flex-col justify-center items-center min-h-[auto] border w-1/4 h-full"
+      >
+        <div ref={crownRef} className="snap-to-head border w-40 h-25">
           <img
             src="/crown.webp"
-            className="bounce snap-to-head draggable w-40 h-25 top-1/2 left-0 align-left"
+            className="bounce draggable w-40 h-25 top-1/2 left-0 align-left"
             alt="crown"
             draggable="false"
           />
@@ -71,12 +97,11 @@ export default function Home() {
         id="middle-section"
         className="flex flex-col justify-center items-center font-mono draggable-zone w-full md:w-2/4 border"
       >
-        <section className="border rounded-lg overflow-hidden m-4 w-[clamp(150px,70%,400px)] sm:w-[clamp(150px,80%,400px)]"> 
-          <img
-            src="/cat.jpeg"
-            className=""
-            draggable="false"
-          ></img>
+        <section
+          ref={catRef}
+          className=" rounded-lg overflow-hidden m-4 w-[clamp(150px,70%,400px)] sm:w-[clamp(150px,80%,400px)]"
+        >
+          <img src="/cat.jpeg" className="" draggable="false"></img>
         </section>
         <section className="flex flex-col items-center mx-auto my-auto text-center rounded-lg border">
           <div className="px-4">
