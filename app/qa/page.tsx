@@ -16,6 +16,7 @@ import {
 } from "animejs";
 
 export default function Home() {
+  const catHeadOffset = 77;
   const catRef = useRef(null);
   const crownRef = useRef(null);
 
@@ -35,7 +36,7 @@ export default function Home() {
         const crown = crownRef.current.getBoundingClientRect();
 
         const catX = ((cat.left + cat.right)/2)
-        const catY = (cat.top + 77)
+        const catY = (cat.top + catHeadOffset)
 
         const crownY = (crown.bottom);
         const crownX = ((crown.left + crown.right)/2)
