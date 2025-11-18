@@ -6,49 +6,159 @@ import { FileText } from "lucide-react";
 import { Code } from "lucide-react";
 import { Mail } from "lucide-react";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import {
   animate,
   createAnimatable,
   utils,
   createDraggable,
   spring,
+  splitText,
+  stagger,
 } from "animejs";
 
 export default function Home() {
+  const catHeadOffset = 77;
+  const catRef = useRef(null);
+  const crownRef = useRef(null);
+
   useEffect(() => {
-    const drag = createDraggable(".crown", {
+    // applies to all paragraphs
+    splitText("p", {
+      words: { wrap: "clip" },
+    }).addEffect(({ words }) =>
+      animate(words, {
+        y: [{ to: ["100%", "0%"] }],
+        delay: stagger(20),
+      })
+    );
+
+    // shake
+    animate('.shake', {
+      x: [
+        { to: -1 },
+        { to: 1 },
+        { to: -1 },
+        { to: 1 },
+        { to: 0 }
+      ],
+      y: [
+        { to: -1 },
+        { to: 1 },
+        { to: -1 },
+        { to: 1 },
+        { to: 0 }
+      ],
+      duration: 300,
+      easing: "easeInOutSine",
+      loop: true
+
+    });
+
+
+    const bounce = animate(".bounce", {
+      y: ["1vh", "-1vh"],
+      loop: true,
+      alternate: true,
+      duration: 400,
+    });
+
+    const drag = createDraggable(".snap-to-head", {
       container: ".draggable-zone",
-      snap: 80,
       onRelease: () => {
-        if ((drag.x) >= -200 && drag.x <= 200) {
-          console.log("Matched!") // test
+        // used to get the current coordinates of the cat
+        const cat = catRef.current.getBoundingClientRect();
+        const crown = crownRef.current.getBoundingClientRect();
+
+        const catX = (cat.left + cat.right) / 2;
+        const catY = cat.top + catHeadOffset;
+
+        const crownY = crown.bottom;
+        const crownX = (crown.left + crown.right) / 2;
+
+        const targetX = drag.x + (catX - crownX);
+        const targetY = drag.y + (catY - crownY);
+
+        console.log("crownX: ", crownX);
+        console.log("crownY: ", crownY);
+
+        console.log("targetX: ", targetX);
+        console.log("targetY: ", targetY);
+        console.log("coords: ", drag.coords);
+
+        if (
+          crownY >= catY - 100 &&
+          crownY <= catY + 100 &&
+          crownX >= catX - 100 &&
+          crownX <= catX + 100
+        ) {
+          console.log("snapping element to head!");
+
+          animate(".bounce", {
+            y: 0,
+            duration: 400,
+          });
+          bounce.cancel();
+
+          drag.disable(); // disable .snap-to-head once it has locked onto the image
+
+          animate(".snap-to-head", { x: targetX, y: targetY });
+          drag.setX(targetX);
+          drag.setY(targetY);
+
+          drag.enable();
+        } else {
+          if (bounce.paused) {
+            animate(".bounce", {
+              y: ["1vh", "-1vh"],
+              loop: true,
+              alternate: true,
+              duration: 400,
+            });
+            bounce.resume();
+          }
         }
-      }
-      
+
+        //console.log("bounce resumed"); // test
+        //console.log(drag.x); // test
+      },
+      onGrab: () => {
+        bounce.pause();
+      },
     });
   }, []);
 
   return (
     <div
-      className="flex flex-col justify-center items-center min-h-screen font-mono draggable-zone"
+      className="flex flex-row justify-center items-center items-center min-h-screen draggable-zone w-full h-full"
       style={{ backgroundImage: "url('/diamond-sunset-bg.svg')" }}
     >
-      <img
-        src="/crown.webp"
-        className="crown draggable w-40 h-25 top-1/2 left-0 align-left"
-        alt="crown"
-      />
-      <div className="">
-        <section className="border w-100 h-125 mx-auto rounded-lg overflow-hidden m-4">
+      <section
+        id="left-section"
+        className="hidden md:flex flex-col justify-center items-center min-h-[auto] border w-1/4 h-full"
+      >
+        <div ref={crownRef} className="snap-to-head border w-40 h-25">
           <img
-            src="/cat.jpeg"
-            className="w-full h-full object-scale"
+            src="/crown.webp"
+            className="bounce draggable w-40 h-25 top-1/2 left-0 align-left"
+            alt="crown"
             draggable="false"
-          ></img>
+          />
+        </div>
+      </section>
+
+      <section
+        id="middle-section"
+        className="flex flex-col justify-center items-center font-mono draggable-zone w-full md:w-2/4 border"
+      >
+        <section
+          ref={catRef}
+          className=" rounded-lg overflow-hidden m-4 w-[clamp(150px,70%,400px)] sm:w-[clamp(150px,80%,400px)]"
+        >
+          <img src="/cat.jpeg" className="" draggable="false"></img>
         </section>
-        <section className="w-180 mx-auto text-center rounded-lg">
-          <div className=" px-4">
+        <section className="flex flex-col items-center mx-auto my-auto text-center rounded-lg border">
+          <div className="px-4">
             <Button
               className="btn"
               variant="outline"
@@ -87,22 +197,26 @@ export default function Home() {
               Resume
             </Button>
           </div>
-          <p className="m-4 rounded-lg">
+          <p className="sm:w-[clamp(150px,80%,700px)] text-center text-sm md:text-md lg:text-lg m-4 rounded-lg lines border">
             Hey! I'm Vincent, a Computing and Financial Management student at
             the University of Waterloo with hands-on experience in software
-            development and data projects. Last Summer, I worked on ETL
+            development and data projects. Last summer, I worked on ETL
             Pipelines and automating workflows at{" "}
             <a
               href="https://www.usepepper.com/"
               target="_blank"
-              className="underline"
             >
-              Pepper
+              <span style={{ color: "rgba(56, 151, 59, 1)" }}>Pepper</span>
             </a>
             . When I'm not coding, you can find me chilling with my two cats.
           </p>
         </section>
-      </div>
+      </section>
+
+      <section
+        id="right-section"
+        className="hidden md:flex flex-col justify-center items-center min-h-[auto] border w-1/4 h-full"
+      ></section>
     </div>
   );
 }
