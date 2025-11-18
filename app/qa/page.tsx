@@ -33,6 +33,29 @@ export default function Home() {
       })
     );
 
+    // shake
+    animate('.shake', {
+      x: [
+        { to: -1 },
+        { to: 1 },
+        { to: -1 },
+        { to: 1 },
+        { to: 0 }
+      ],
+      y: [
+        { to: -1 },
+        { to: 1 },
+        { to: -1 },
+        { to: 1 },
+        { to: 0 }
+      ],
+      duration: 300,
+      easing: "easeInOutSine",
+      loop: true
+
+    });
+
+
     const bounce = animate(".bounce", {
       y: ["1vh", "-1vh"],
       loop: true,
