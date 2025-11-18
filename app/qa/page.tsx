@@ -13,6 +13,8 @@ import {
   utils,
   createDraggable,
   spring,
+  splitText,
+  stagger,
 } from "animejs";
 
 export default function Home() {
@@ -21,6 +23,16 @@ export default function Home() {
   const crownRef = useRef(null);
 
   useEffect(() => {
+    // applies to all paragraphs
+    splitText("p", {
+      words: { wrap: "clip" },
+    }).addEffect(({ words }) =>
+      animate(words, {
+        y: [{ to: ["100%", "0%"] }],
+        delay: stagger(20),
+      })
+    );
+
     const bounce = animate(".bounce", {
       y: ["1vh", "-1vh"],
       loop: true,
@@ -35,35 +47,53 @@ export default function Home() {
         const cat = catRef.current.getBoundingClientRect();
         const crown = crownRef.current.getBoundingClientRect();
 
-        const catX = ((cat.left + cat.right)/2)
-        const catY = (cat.top + catHeadOffset)
+        const catX = (cat.left + cat.right) / 2;
+        const catY = cat.top + catHeadOffset;
 
-        const crownY = (crown.bottom);
-        const crownX = ((crown.left + crown.right)/2)
+        const crownY = crown.bottom;
+        const crownX = (crown.left + crown.right) / 2;
 
         const targetX = drag.x + (catX - crownX);
         const targetY = drag.y + (catY - crownY);
 
-        console.log("crownX: ", crownX)
-        console.log("crownY: ", crownY)
+        console.log("crownX: ", crownX);
+        console.log("crownY: ", crownY);
 
-        console.log("targetX: ", targetX)
-        console.log("targetY: ", targetY)
-        console.log("coords: ",drag.coords)
+        console.log("targetX: ", targetX);
+        console.log("targetY: ", targetY);
+        console.log("coords: ", drag.coords);
 
-        if (crownY >= (catY - 100) && crownY <= (catY + 100) && crownX >= (catX - 100) && crownX <= (catX + 100)) {
+        if (
+          crownY >= catY - 100 &&
+          crownY <= catY + 100 &&
+          crownX >= catX - 100 &&
+          crownX <= catX + 100
+        ) {
           console.log("snapping element to head!");
-          
-          bounce.pause();
+
+          animate(".bounce", {
+            y: 0,
+            duration: 400,
+          });
+          bounce.cancel();
+
           drag.disable(); // disable .snap-to-head once it has locked onto the image
 
-          animate(".snap-to-head", { x: targetX, y: targetY});
+          animate(".snap-to-head", { x: targetX, y: targetY });
           drag.setX(targetX);
           drag.setY(targetY);
 
           drag.enable();
         } else {
-          bounce.resume();
+          if (bounce.paused) {
+            animate(".bounce", {
+              y: ["1vh", "-1vh"],
+              loop: true,
+              alternate: true,
+              duration: 400,
+            });
+            bounce.resume();
+          }
         }
 
         //console.log("bounce resumed"); // test
@@ -144,7 +174,7 @@ export default function Home() {
               Resume
             </Button>
           </div>
-          <p className="sm:w-[clamp(150px,80%,700px)] text-center text-sm md:text-md lg:text-lg m-4 rounded-lg border">
+          <p className="sm:w-[clamp(150px,80%,700px)] text-center text-sm md:text-md lg:text-lg m-4 rounded-lg lines border">
             Hey! I'm Vincent, a Computing and Financial Management student at
             the University of Waterloo with hands-on experience in software
             development and data projects. Last summer, I worked on ETL
@@ -152,9 +182,8 @@ export default function Home() {
             <a
               href="https://www.usepepper.com/"
               target="_blank"
-              className="underline"
             >
-              Pepper
+              <span style={{ color: "rgba(56, 151, 59, 1)" }}>Pepper</span>
             </a>
             . When I'm not coding, you can find me chilling with my two cats.
           </p>
