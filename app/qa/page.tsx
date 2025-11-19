@@ -17,6 +17,8 @@ import {
   stagger,
 } from "animejs";
 
+
+
 export default function Home() {
   const catHeadOffset = 77;
   const catRef = useRef(null);
@@ -66,6 +68,9 @@ export default function Home() {
     const drag = createDraggable(".snap-to-head", {
       container: ".draggable-zone",
       onRelease: () => {
+        document.title = "...";
+
+
         // used to get the current coordinates of the cat
         const cat = catRef.current.getBoundingClientRect();
         const crown = crownRef.current.getBoundingClientRect();
@@ -123,6 +128,7 @@ export default function Home() {
         //console.log(drag.x); // test
       },
       onGrab: () => {
+        document.title = "!!!";
         bounce.pause();
       },
     });

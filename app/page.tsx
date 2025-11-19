@@ -15,6 +15,8 @@ import {
   spring,
 } from "animejs";
 
+
+
 export default function Home() {
   useEffect(() => {
     // https://animejs.com/documentation/animatable
