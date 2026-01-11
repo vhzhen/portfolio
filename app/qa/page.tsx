@@ -23,6 +23,18 @@ export default function Home() {
   const catHeadOffset = 77;
   const catRef = useRef(null);
   const crownRef = useRef(null);
+  const isDraggingRef = useRef(false);
+  const isSnappedRef = useRef(false);
+
+  const updateTitle = () => {
+    if (isDraggingRef.current) {
+      document.title = "!!!";
+    } else if (isSnappedRef.current) {
+      document.title = "👑";
+    } else {
+      document.title = "...";
+    }
+  };
 
   useEffect(() => {
     // applies to all paragraphs
@@ -68,8 +80,9 @@ export default function Home() {
     const drag = createDraggable(".snap-to-head", {
       container: ".draggable-zone",
       onRelease: () => {
-        document.title = "...";
+        isDraggingRef.current = false;
 
+        if (!catRef.current || !crownRef.current) return;
 
         // used to get the current coordinates of the cat
         const cat = catRef.current.getBoundingClientRect();
@@ -91,13 +104,16 @@ export default function Home() {
         console.log("targetY: ", targetY);
         console.log("coords: ", drag.coords);
 
-        if (
-          crownY >= catY - 100 &&
+        const snapped =  crownY >= catY - 100 &&
           crownY <= catY + 100 &&
           crownX >= catX - 100 &&
           crownX <= catX + 100
-        ) {
+
+        if (snapped) {
           console.log("snapping element to head!");
+
+          isSnappedRef.current = true;
+
 
           animate(".bounce", {
             y: 0,
@@ -113,6 +129,8 @@ export default function Home() {
 
           drag.enable();
         } else {
+          isSnappedRef.current = false;
+
           if (bounce.paused) {
             animate(".bounce", {
               y: ["1vh", "-1vh"],
@@ -123,14 +141,17 @@ export default function Home() {
             bounce.resume();
           }
         }
+        updateTitle();
 
         //console.log("bounce resumed"); // test
         //console.log(drag.x); // test
       },
       onGrab: () => {
-        document.title = "!!!";
+        isDraggingRef.current = true;
+        updateTitle();
         bounce.pause();
       },
+
     });
   }, []);
 
@@ -141,9 +162,9 @@ export default function Home() {
     >
       <section
         id="left-section"
-        className="hidden md:flex flex-col justify-center items-center min-h-[auto] border w-1/4 h-full"
+        className="hidden md:flex flex-col justify-center items-center min-h-[auto] w-1/4 h-full"
       >
-        <div ref={crownRef} className="snap-to-head border w-40 h-25">
+        <div ref={crownRef} className="snap-to-head w-40 h-25 hidden md:block">
           <img
             src="/crown.webp"
             className="bounce draggable w-40 h-25 top-1/2 left-0 align-left"
@@ -155,15 +176,15 @@ export default function Home() {
 
       <section
         id="middle-section"
-        className="flex flex-col justify-center items-center font-mono draggable-zone w-full md:w-2/4 border"
+        className="flex flex-col justify-center items-center font-mono draggable-zone w-full md:w-2/4"
       >
         <section
           ref={catRef}
-          className=" rounded-lg overflow-hidden m-4 w-[clamp(150px,70%,400px)] sm:w-[clamp(150px,80%,400px)]"
+          className="rounded-lg overflow-hidden m-4 w-[clamp(200px,50vw,400px)]"
         >
-          <img src="/cat.jpeg" className="" draggable="false"></img>
+          <img src="/cat.jpeg" className="w-full h-auto" draggable="false"></img>
         </section>
-        <section className="flex flex-col items-center mx-auto my-auto text-center rounded-lg border">
+        <section className="flex flex-col items-center mx-auto my-auto text-center rounded-lg">
           <div className="px-4">
             <Button
               className="btn"
@@ -203,7 +224,14 @@ export default function Home() {
               Resume
             </Button>
           </div>
-          <p className="sm:w-[clamp(150px,80%,700px)] text-center text-sm md:text-md lg:text-lg m-4 rounded-lg lines border">
+          <p
+          className="
+            max-w-[700px]
+            px-4
+            text-sm sm:text-base md:text-lg
+            leading-relaxed
+            m-4"
+            >
             Hey! I'm Vincent, a Computing and Financial Management student at
             the University of Waterloo with hands-on experience in software
             development and data projects. Last summer, I worked on ETL
@@ -221,7 +249,7 @@ export default function Home() {
 
       <section
         id="right-section"
-        className="hidden md:flex flex-col justify-center items-center min-h-[auto] border w-1/4 h-full"
+        className="hidden md:flex flex-col justify-center items-center min-h-[auto] w-1/4 h-full"
       ></section>
     </div>
   );
