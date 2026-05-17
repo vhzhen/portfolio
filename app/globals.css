@@ -42,8 +42,21 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+html {
+  /* The mobile overscroll ("rubber-band") area shows the html element's
+     background. #96B9FF is the colour at the bottom of the gradient, so
+     scrolling past the bottom blends instead of flashing white. */
+  background-color: #96b9ff;
+  background-image: url('/diamond-sunset-bg.svg');
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+}
+
 body {
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: transparent;
 }
 
 .btn {

@@ -55,18 +55,18 @@ export default function Home() {
 
   return (
     <div
-      className="flex flex-col justify-center items-center min-h-screen font-mono"
+      className="flex flex-col justify-center items-center min-h-screen font-mono py-8"
       style={{ backgroundImage: "url('/diamond-sunset-bg.svg')" }}
     >
       <div>
-        <section className="border w-100 h-125 mx-auto rounded-lg overflow-hidden m-4">
+        <section className="border w-[min(90vw,400px)] aspect-[4/5] mx-auto rounded-lg overflow-hidden m-4">
           <img
             src="/cat.jpeg"
-            className="w-full h-full object-scale transition-transform duration-300 ease-out hover:scale-105"
+            className="w-full h-full object-cover transition-transform duration-300 ease-out hover:scale-105"
           ></img>
         </section>
-        <section className="w-180 mx-auto text-center rounded-lg">
-          <div className=" px-4">
+        <section className="w-full max-w-[720px] mx-auto text-center rounded-lg px-4">
+          <div className="flex flex-wrap justify-center gap-2 px-4">
             <Button
               className="hover:scale-110 btn transition-transform duration-200"
               variant="outline"

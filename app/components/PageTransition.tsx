@@ -11,10 +11,11 @@ import {
 import { useRouter, usePathname } from "next/navigation";
 import { animate } from "animejs";
 
-const GREEN = "#018A00";
+const GREEN = "#52D273";
 const WHITE = "#ffffff";
-const DUR = 520; // ms per swipe
-const LAG = DUR / 2; // follower starts when leader hits the middle
+const DUR = 300; // ms per swipe
+const LAG = (DUR / 2); // follower starts when leader hits the middle
+const HOLD = 100; // ms pause after green covers, before reveal
 
 type Ctx = { navigate: (href: string) => void };
 const TransitionContext = createContext<Ctx>({ navigate: () => {} });
@@ -74,36 +75,40 @@ export default function PageTransition({
     [pathname, router]
   );
 
-  // Once the route actually changes, peel the panels off to the right in
-  // the same staggered order to reveal the new page.
+  // Once the route actually changes, wait a moment, then peel the panels
+  // off to the right in the same staggered order to reveal the new page.
   useEffect(() => {
     if (phaseRef.current !== "covered") return;
     phaseRef.current = "revealing";
     pendingHref.current = null;
 
-    requestAnimationFrame(() => {
-      if (!whiteRef.current || !greenRef.current) return;
+    const timer = setTimeout(() => {
+      requestAnimationFrame(() => {
+        if (!whiteRef.current || !greenRef.current) return;
 
-      // Top (green) exits first, sliding off to the right.
-      animate(greenRef.current, {
-        x: ["0%", "100%"],
-        duration: DUR,
-        ease: "inOutQuad",
-      });
+        // Top (green) exits first, sliding off to the right.
+        animate(greenRef.current, {
+          x: ["0%", "100%"],
+          duration: DUR,
+          ease: "inOutQuad",
+        });
 
-      // Bottom (white) follows once green has cleared the middle; when it
-      // leaves view the new page is fully shown.
-      animate(whiteRef.current, {
-        x: ["0%", "100%"],
-        duration: DUR,
-        delay: LAG,
-        ease: "inOutQuad",
-        onComplete: () => {
-          phaseRef.current = "idle";
-          setActive(false);
-        },
+        // Bottom (white) follows once green has cleared the middle; when it
+        // leaves view the new page is fully shown.
+        animate(whiteRef.current, {
+          x: ["0%", "100%"],
+          duration: DUR,
+          delay: LAG,
+          ease: "inOutQuad",
+          onComplete: () => {
+            phaseRef.current = "idle";
+            setActive(false);
+          },
+        });
       });
-    });
+    }, HOLD);
+
+    return () => clearTimeout(timer);
   }, [pathname]);
 
   const panel = (color: string, z: number): React.CSSProperties => ({
