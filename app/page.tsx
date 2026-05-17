@@ -6,6 +6,12 @@ import { TransitionLink } from "./components/PageTransition";
 import TdChart from "./components/TdChart";
 import EtlPipeline from "./components/EtlPipeline";
 import ScrapeDemo from "./components/ScrapeDemo";
+import { GithubProjects, GithubPreview } from "./components/GithubPanels";
+import {
+  FishingGame,
+  MinecraftSpeedrun,
+  DbdSkillCheck,
+} from "./components/HobbyWidgets";
 
 import { useEffect, useRef, useState } from "react";
 import { animate, createDraggable, spring } from "animejs";
@@ -13,30 +19,6 @@ import { animate, createDraggable, spring } from "animejs";
 /* ------------------------------------------------------------------ *
  * Content config. Edit these to add merch / projects.
  * ------------------------------------------------------------------ */
-
-// EDIT ME: your GitHub projects shown when the GitHub hat is on the cat.
-const PROJECTS: { name: string; desc: string; href: string }[] = [
-  {
-    name: "portfolio",
-    desc: "This site. Next.js + anime.js, draggable cat merch.",
-    href: "https://github.com/vhzhen/portfolio",
-  },
-  {
-    name: "etl-pipelines",
-    desc: "Workflow automation & ETL work from my Pepper internship.",
-    href: "https://github.com/vhzhen",
-  },
-  {
-    name: "hackathon-projects",
-    desc: "Devpost builds — weekend prototypes that shipped.",
-    href: "https://devpost.com/vincentzhen2006",
-  },
-  {
-    name: "more-on-github",
-    desc: "Everything else lives here.",
-    href: "https://github.com/vhzhen",
-  },
-];
 
 type ObjectTheme = {
   /** Browser tab title when this object is equipped. */
@@ -63,30 +45,6 @@ type DragObject = {
   h: number;
   theme?: ObjectTheme;
 };
-
-const githubSide = (
-  <div className="flex flex-col gap-3">
-    <p className="font-mono text-xs uppercase tracking-widest text-white/70">
-      {"// github projects"}
-    </p>
-    {PROJECTS.map((p) => (
-      <a
-        key={p.name}
-        href={p.href}
-        target="_blank"
-        rel="noreferrer"
-        className="block rounded-lg border border-white/15 bg-white/5 p-3 text-left backdrop-blur-sm transition-colors hover:bg-white/15"
-      >
-        <span className="font-mono text-sm font-semibold text-white">
-          {p.name}
-        </span>
-        <span className="mt-1 block text-xs leading-snug text-white/70">
-          {p.desc}
-        </span>
-      </a>
-    ))}
-  </div>
-);
 
 const highlight = (title: string, body: string) => (
   <div className="rounded-lg border border-white/15 bg-white/5 p-4 text-left backdrop-blur-sm">
@@ -138,7 +96,8 @@ const OBJECTS: DragObject[] = [
           sides — or pull the hat off to go back home.
         </>
       ),
-      side: githubSide,
+      side: <GithubProjects />,
+      sideRight: <GithubPreview />,
     },
   },
   {
@@ -215,7 +174,7 @@ const OBJECTS: DragObject[] = [
           )}
           {highlight(
             "// Visual Basic → Python",
-            "Rewrote the ETF parser with Bloomberg API error checking and SQL logging.",
+            "Rewrote the ETF parser in Python. Enriched with Bloomberg API error checking and SQL logging.",
           )}
         </div>
       ),
@@ -223,17 +182,31 @@ const OBJECTS: DragObject[] = [
   },
   {
     id: "cap-1",
-    label: "Company cap",
+    // TODO: swap /cap-1.svg for a propeller-hat asset.
+    label: "Propeller hat",
     src: "/cap-1.svg",
     w: 100,
     h: 65,
     theme: {
-      title: "🧢",
+      title: "🎈",
       gradient:
         "linear-gradient(160deg, #1e1b4b 0%, #4f46e5 55%, #818cf8 100%)",
-      heading: "@ company",
-      blurb: <>Placeholder merch — rename this cap once the NDA lifts.</>,
-      side: highlight("// company", "Swap this out for a real internship."),
+      heading: "Off the clock",
+      blurb: (
+        <>
+          When the propeller hat goes on, work goes off. You&apos;ll find me
+          Minecraft speedrunning, surviving (or dying) in Dead by Daylight, or
+          out fishing. Take the hat off to get back to business.
+        </>
+      ),
+      side: <FishingGame />,
+      sideLeft: (
+        <div className="flex flex-col gap-3">
+          <MinecraftSpeedrun />
+          <DbdSkillCheck />
+        </div>
+      ),
+      sideRight: <FishingGame />,
     },
   },
   {
@@ -493,7 +466,7 @@ export default function Home() {
 
         <div className="mt-2 flex flex-wrap justify-center gap-2 px-4">
           <Button
-            className="btn transition-transform duration-200 hover:scale-110"
+            className="btn border-white/20 bg-white/5 text-white backdrop-blur-sm transition-transform duration-200 hover:scale-110 hover:bg-white/15 hover:text-white"
             variant="outline"
             onClick={() => window.open("https://github.com/vhzhen", "_blank")}
           >
@@ -501,7 +474,7 @@ export default function Home() {
             GitHub
           </Button>
           <Button
-            className="btn transition-transform duration-200 hover:scale-110"
+            className="btn border-white/20 bg-white/5 text-white backdrop-blur-sm transition-transform duration-200 hover:scale-110 hover:bg-white/15 hover:text-white"
             variant="outline"
             onClick={() =>
               (window.location.href =
@@ -512,7 +485,7 @@ export default function Home() {
             Mail
           </Button>
           <Button
-            className="btn transition-transform duration-200 hover:scale-110"
+            className="btn border-white/20 bg-white/5 text-white backdrop-blur-sm transition-transform duration-200 hover:scale-110 hover:bg-white/15 hover:text-white"
             variant="outline"
             onClick={() =>
               window.open("https://devpost.com/vincentzhen2006", "_blank")
@@ -522,7 +495,7 @@ export default function Home() {
             Devpost
           </Button>
           <Button
-            className="btn transition-transform duration-200 hover:scale-110"
+            className="btn border-white/20 bg-white/5 text-white backdrop-blur-sm transition-transform duration-200 hover:scale-110 hover:bg-white/15 hover:text-white"
             variant="outline"
             onClick={() => window.open("/resume.pdf", "_blank")}
           >
@@ -531,7 +504,7 @@ export default function Home() {
           </Button>
           <TransitionLink href="/td">
             <Button
-              className="btn transition-transform duration-200 hover:scale-110"
+              className="btn border-white/20 bg-white/5 text-white backdrop-blur-sm transition-transform duration-200 hover:scale-110 hover:bg-white/15 hover:text-white"
               variant="outline"
             >
               <TrendingUp />
@@ -562,9 +535,7 @@ export default function Home() {
           className="w-full max-w-[320px] transition-opacity duration-500"
           style={{ opacity: activeTheme ? 1 : 0 }}
         >
-          {equipped === "github"
-            ? null
-            : (activeTheme?.sideRight ?? activeTheme?.side)}
+          {activeTheme?.sideRight ?? activeTheme?.side}
         </div>
       </section>
 
