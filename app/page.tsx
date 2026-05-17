@@ -5,6 +5,8 @@ import { Github } from "lucide-react";
 import { FileText } from "lucide-react";
 import { Code } from "lucide-react";
 import { Mail } from "lucide-react";
+import { TrendingUp } from "lucide-react";
+import { TransitionLink } from "./components/PageTransition";
 
 import { useEffect } from "react";
 import {
@@ -56,14 +58,17 @@ export default function Home() {
       className="flex flex-col justify-center items-center min-h-screen font-mono"
       style={{ backgroundImage: "url('/diamond-sunset-bg.svg')" }}
     >
-      <div className="follow">
+      <div>
         <section className="border w-100 h-125 mx-auto rounded-lg overflow-hidden m-4">
-          <img src="/cat.jpeg" className="w-full h-full object-scale"></img>
+          <img
+            src="/cat.jpeg"
+            className="w-full h-full object-scale transition-transform duration-300 ease-out hover:scale-105"
+          ></img>
         </section>
         <section className="w-180 mx-auto text-center rounded-lg">
           <div className=" px-4">
             <Button
-              className="btn"
+              className="hover:scale-110 btn transition-transform duration-200"
               variant="outline"
               onClick={() => window.open("https://github.com/vhzhen", "_blank")}
             >
@@ -71,7 +76,7 @@ export default function Home() {
               GitHub
             </Button>
             <Button
-              className="btn"
+              className="btn transition-transform duration-200 hover:scale-110"
               variant="outline"
               onClick={() =>
                 (window.location.href =
@@ -82,7 +87,7 @@ export default function Home() {
               Mail
             </Button>
             <Button
-              className="btn"
+              className="btn transition-transform duration-200 hover:scale-110"
               variant="outline"
               onClick={() =>
                 window.open("https://devpost.com/vincentzhen2006", "_blank")
@@ -92,13 +97,22 @@ export default function Home() {
               Devpost
             </Button>
             <Button
-              className="btn"
+              className="btn transition-transform duration-200 hover:scale-110"
               variant="outline"
               onClick={() => window.open("/resume.pdf", "_blank")}
             >
               <FileText />
               Resume
             </Button>
+            <TransitionLink href="/td">
+              <Button
+                className="btn transition-transform duration-200 hover:scale-110"
+                variant="outline"
+              >
+                <TrendingUp />
+                TD
+              </Button>
+            </TransitionLink>
           </div>
           <p className="m-4 rounded-lg">
             Hey! I'm Vincent, a Computing and Financial Management student at
@@ -108,9 +122,8 @@ export default function Home() {
             <a
               href="https://www.usepepper.com/"
               target="_blank"
-              className="underline"
             >
-              Pepper
+              <span style={{ color: "rgba(56, 151, 59, 1)" }}>Pepper</span>
             </a>
             . When I'm not coding, you can find me chilling with my two cats.
           </p>
