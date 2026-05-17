@@ -1,0 +1,160 @@
+{
+  "data": {
+    "sellerId": "USBL",
+    "siteId": "056",
+    "productId": "7278464",
+    "productInfo": {
+      "constraints": null,
+      "isBuyAmerican": false,
+      "regulatedCertificates": [],
+      "additionalDietaryGuidelines": [],
+      "servingsPerCase": null,
+      "assortmentClassification": {
+        "type": "MID_PROFIT",
+        "color": "YELLOW",
+        "priority": 400
+      },
+      "rewardPoints": null,
+      "averageWeightPerCase": 20.28,
+      "brand": {
+        "id": "OURHOM",
+        "name": "OURHOME"
+      },
+      "broker": {
+        "number": null,
+        "name": null,
+        "contactName": null,
+        "contactPhone": null,
+        "contactEmail": null,
+        "id": ""
+      },
+      "category": {
+        "mainId": "6",
+        "mainName": "FROZEN",
+        "majorId": "2",
+        "intermediateId": "60",
+        "intermediateName": "ORIENTAL",
+        "minorId": "99",
+        "minorName": "MISC.",
+        "majorName": "CONVENIENCE PRD",
+        "name": "FROZEN",
+        "displayName": null,
+        "complete": "06002060099"
+      },
+      "description": "Noodle Udon Sanukki Frozen",
+      "demandStatusFlag": "0",
+      "featuresAndBenefits": {
+        "productDescriptor": "Made of high quality wheat flour with the natural sweetness of wheat. This delicate balance between firmness and softness can be used in Udon soup and stir fried noodles.",
+        "packagingInformation": null,
+        "sizeAndShapeOfProduct": null,
+        "yieldOrServingSize": null,
+        "qualityAndFormat": null,
+        "prepCookingInstructions": null,
+        "storageAndUsage": null,
+        "handlingInstructions": null,
+        "additionalProductInformation": null,
+        "marketingStatements": null,
+        "culinaryApplications": null
+      },
+      "gtin": 50678108457016,
+      "grossWeight": 22.27,
+      "images": [
+        "https://mediacdn.sysco.com/images/rendition?id=37fc357c5908c9cf38e8c2357ac908566fc45adb",
+        "https://mediacdn.sysco.com/images/rendition?id=a79bef44eee7cbc755ea9f31d1156438ba53d595",
+        "https://mediacdn.sysco.com/images/rendition?id=1cffb3d8253d2349d24136fe12960a3defc5eb6c",
+        "https://mediacdn.sysco.com/images/rendition?id=bb73f8db410cdf2291bc6ae7d046cd3a6bd6c732"
+      ],
+      "isAvailable": true,
+      "isCatchWeight": false,
+      "isDropShip": false,
+      "isOrderable": true,
+      "isOpot": false,
+      "isPhasedOut": false,
+      "isSyscoBrand": false,
+      "isShipSplitOnly": null,
+      "isShopOrderable": true,
+      "isSoldAs": {
+        "split": false,
+        "case": true
+      },
+      "lineDescription": "Made of high quality wheat flour with the natural sweetness of wheat. This delicate balance between firmness and softness can be used in Udon soup and stir fried noodles.",
+      "localDescription": null,
+      "manufacturerUPC": "45701N",
+      "name": "NOODLE UDON SANUKKI FZN",
+      "netWeight": 20.28,
+      "packSize": {
+        "pack": "8",
+        "size": "1.15KG",
+        "uom": "KG"
+      },
+      "replacementProduct": null,
+      "sourceVendor": "1188",
+      "sourceVendorType": null,
+      "sourceVendorShipPtNumber": "25",
+      "specialist": {
+        "name": "JAMES TUCKER",
+        "phone": null
+      },
+      "split": {
+        "min": 0,
+        "max": 0
+      },
+      "stockType": "STOCKED",
+      "unitPerCase": 1,
+      "weightUom": "LB",
+      "consumerInformation": {
+        "generalDescription": null,
+        "prepAndCookingInstructions": null,
+        "storageAndUsage": null,
+        "servingSuggestions": null
+      },
+      "dimension": {
+        "uom": "IN",
+        "length": 14,
+        "width": 16.5,
+        "height": 7.5
+      },
+      "totalShelfLife": 365,
+      "trueVendorName": "EUROPEAN IMPORTS INC",
+      "statusCode": "A",
+      "storageFlag": "F",
+      "taxonomy": {
+        "hierarchyId": 16149275,
+        "businessCenter": "Frozen Foods",
+        "itemGroup": "Pasta",
+        "attributeGroup": null,
+        "attributes": null,
+        "taxonomyAttributes": [
+          {
+            "value": "Udon",
+            "priority": "1",
+            "name": "Product Type"
+          }
+        ],
+        "businessCenterId": "syy_cust_tax_frozenfoods",
+        "itemGroupId": "syy_cust_tax_pasta",
+        "attributeGroupId": null
+      },
+      "isExpandedAssortment": false,
+      "siteRelatedProducts": [],
+      "supplyAvailability": null,
+      "sustainabilityAttributes": [],
+      "gpo": null,
+      "uuom": {
+        "uomName": "Kilo",
+        "uomQuantity": 1.15,
+        "equivalentUomQuantity": 8,
+        "usageLot": "Multi-Serve Each",
+        "universalUomName": "Each",
+        "ruleUsed": "4004"
+      }
+    },
+    "shippingTimeEstimation": null,
+    "seller": {
+      "id": "USBL",
+      "name": null,
+      "provider": null,
+      "group": "LOCAL_SALES"
+    }
+  }
+}

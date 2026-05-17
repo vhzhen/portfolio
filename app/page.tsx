@@ -3,6 +3,9 @@
 import { Button } from "@/components/ui/button";
 import { Github, FileText, Code, Mail, TrendingUp } from "lucide-react";
 import { TransitionLink } from "./components/PageTransition";
+import TdChart from "./components/TdChart";
+import EtlPipeline from "./components/EtlPipeline";
+import ScrapeDemo from "./components/ScrapeDemo";
 
 import { useEffect, useRef, useState } from "react";
 import { animate, createDraggable, spring } from "animejs";
@@ -16,7 +19,7 @@ const PROJECTS: { name: string; desc: string; href: string }[] = [
   {
     name: "portfolio",
     desc: "This site. Next.js + anime.js, draggable cat merch.",
-    href: "https://github.com/vhzhen",
+    href: "https://github.com/vhzhen/portfolio",
   },
   {
     name: "etl-pipelines",
@@ -44,8 +47,11 @@ type ObjectTheme = {
   heading: string;
   /** Replacement bio paragraph. */
   blurb: React.ReactNode;
-  /** Side-rail content (hidden on mobile). */
+  /** Side-rail content (hidden on mobile). Shown in both rails. */
   side: React.ReactNode;
+  /** Optional per-rail overrides (used so the TD chart mounts once). */
+  sideLeft?: React.ReactNode;
+  sideRight?: React.ReactNode;
 };
 
 type DragObject = {
@@ -55,8 +61,6 @@ type DragObject = {
   /** Rendered thumbnail size in the tray, px. */
   w: number;
   h: number;
-  /** Where on the object (0=top,1=bottom) sits on the cat's head. */
-  anchorY: number;
   theme?: ObjectTheme;
 };
 
@@ -100,7 +104,6 @@ const OBJECTS: DragObject[] = [
     src: "/crown.webp",
     w: 96,
     h: 60,
-    anchorY: 0.92,
     theme: {
       title: "👑",
       gradient:
@@ -124,12 +127,11 @@ const OBJECTS: DragObject[] = [
     src: "/github-hat.svg",
     w: 104,
     h: 68,
-    anchorY: 0.78,
     theme: {
-      title: "🐙",
+      title: "💻",
       gradient:
         "linear-gradient(160deg, #0d1117 0%, #161b22 50%, #1f2937 100%)",
-      heading: "open source",
+      heading: "Projects",
       blurb: (
         <>
           When the GitHub hat is on, I&apos;m shipping. Check the projects on the
@@ -145,25 +147,30 @@ const OBJECTS: DragObject[] = [
     src: "/pepper-cap.svg",
     w: 104,
     h: 68,
-    anchorY: 0.78,
     theme: {
       title: "🌶️",
       gradient:
         "linear-gradient(160deg, #0f3d17 0%, #2d7a30 55%, #57c45b 100%)",
-      heading: "@ pepper",
+      heading: "Software Developer @ Pepper",
       blurb: (
         <>
-          Last summer I built ETL pipelines and automated workflows at{" "}
+          Last summer at{" "}
           <a href="https://www.usepepper.com/" target="_blank" rel="noreferrer">
             <span className="font-semibold underline">Pepper</span>
-          </a>
-          . Take the cap off and the cat goes back to civilian life.
+          </a>{" "}
+          I built ETL pipelines pulling from APIs, SFTP, and web scraping —
+          parsing unstructured pages and files into structured JSON, staging to
+          AWS S3 where a Lambda verified each file before landing every JSON
+          object as a MongoDB document. Take the cap off and the cat goes back
+          to civilian life.
         </>
       ),
       side: highlight(
         "// pepper",
-        "ETL pipelines, workflow automation, and data plumbing for a fast-moving team.",
+        "ETL: APIs/SFTP → parse .csv/.txt to .jsonl → S3 → Lambda verify → MongoDB.",
       ),
+      sideLeft: <EtlPipeline />,
+      sideRight: <ScrapeDemo />,
     },
   },
   {
@@ -172,24 +179,45 @@ const OBJECTS: DragObject[] = [
     src: "/td-cap.svg",
     w: 104,
     h: 68,
-    anchorY: 0.78,
     theme: {
       title: "📈",
       gradient:
         "linear-gradient(160deg, #003314 0%, #006b00 55%, #2bd14f 100%)",
-      heading: "@ td",
+      heading: "ETF Trader @ TD Securities",
       blurb: (
         <>
-          More on my TD work lives on the{" "}
+          ETF Trading, Global Markets — Jan–Apr 2026. Built a PyQt5 tool to
+          analyze cross-desk ETF flow (DMA/ATS/ETF) and surface spread
+          inefficiencies, a FIX-protocol GUI automating ETF creation/redemption
+          for BlackRock &amp; Vanguard (cutting execution from 3–4 min to
+          &lt;2s), and refactored a VB ETF parser into Python with Bloomberg
+          API checks and SQL logging. More on the{" "}
           <TransitionLink href="/td">
             <span className="font-semibold underline">TD page</span>
           </TransitionLink>
-          . Remove the cap to reset.
+          .
         </>
       ),
       side: highlight(
         "// td",
-        "Finance-meets-software work. Open the TD page for the full breakdown.",
+        "Finance-meets-software work on the ETF trading desk.",
+      ),
+      sideLeft: <TdChart />,
+      sideRight: (
+        <div className="flex flex-col gap-3">
+          {highlight(
+            "// cross-desk flow",
+            "PyQt5 analytics over tens of thousands of orders to find spread inefficiencies and retune quoting.",
+          )}
+          {highlight(
+            "// Financial Information Exchange (FIX) automation",
+            "ETF Creation/Redemption GUI with custom BlackRock, Vanguard and State Street payloads. 3-4 minutes down to <2s.",
+          )}
+          {highlight(
+            "// Visual Basic → Python",
+            "Rewrote the ETF parser with Bloomberg API error checking and SQL logging.",
+          )}
+        </div>
       ),
     },
   },
@@ -199,7 +227,6 @@ const OBJECTS: DragObject[] = [
     src: "/cap-1.svg",
     w: 100,
     h: 65,
-    anchorY: 0.78,
     theme: {
       title: "🧢",
       gradient:
@@ -215,7 +242,6 @@ const OBJECTS: DragObject[] = [
     src: "/cap-2.svg",
     w: 100,
     h: 65,
-    anchorY: 0.78,
     theme: {
       title: "🧢",
       gradient:
@@ -227,7 +253,7 @@ const OBJECTS: DragObject[] = [
   },
 ];
 
-const HEAD_RATIO = 0.17; // fraction down the cat image where the head sits
+const HEAD_RATIO = 0.15; // fraction down the cat image where the head sits
 const SNAP_RADIUS = 120; // px proximity to head that counts as a snap
 const snapSpring = spring({ stiffness: 140, damping: 16 });
 
@@ -266,6 +292,8 @@ export default function Home() {
       const drag = dragMap.current.get(id);
       const float = floatMap.current.get(id);
       if (!el || !drag) return;
+      const imgEl = el.querySelector("img");
+      if (imgEl) animate(imgEl, { scale: 1, ease: snapSpring });
       drag.disable();
       animate(el, {
         x: 0,
@@ -286,14 +314,17 @@ export default function Home() {
       const drag = dragMap.current.get(obj.id);
       if (!el || !drag || !catRef.current) return false;
 
+      const imgEl = el.querySelector("img");
       const cat = catRef.current.getBoundingClientRect();
-      const o = el.getBoundingClientRect();
+      // Measure the image itself so the *visible* bottom-middle is the anchor.
+      const o = (imgEl ?? el).getBoundingClientRect();
 
       const headX = cat.left + cat.width / 2;
       const headY = cat.top + cat.height * HEAD_RATIO;
 
+      // Standardized anchor: bottom-middle of the image sits on the head.
       const anchorX = o.left + o.width / 2;
-      const anchorY = o.top + o.height * obj.anchorY;
+      const anchorY = o.bottom;
 
       const dx = headX - anchorX;
       const dy = headY - anchorY;
@@ -303,6 +334,16 @@ export default function Home() {
 
       const targetX = drag.x + dx;
       const targetY = drag.y + dy;
+
+      // Scale the hat to ~1/3 of the cat's width. transform-origin is
+      // bottom-center (origin-bottom), so scaling keeps the bottom-middle
+      // pinned to the head point.
+      if (imgEl) {
+        animate(imgEl, {
+          scale: cat.width / 3 / obj.w,
+          ease: snapSpring,
+        });
+      }
 
       floatMap.current.get(obj.id)?.pause();
       drag.disable();
@@ -319,7 +360,7 @@ export default function Home() {
       return true;
     };
 
-    OBJECTS.forEach((obj) => {
+    OBJECTS.forEach((obj, i) => {
       const el = elMap.current.get(obj.id);
       if (!el) return;
 
@@ -332,6 +373,8 @@ export default function Home() {
             loop: true,
             alternate: true,
             duration: 1500,
+            // Staggered left-to-right so the bob reads as a clean wave.
+            delay: i * 150,
             ease: "inOutSine",
           }),
         );
@@ -339,10 +382,15 @@ export default function Home() {
 
       const drag = createDraggable(el, {
         container: sceneRef.current ?? undefined,
+        // Kill throw momentum — a flicked hat snaps back instead of sliding.
+        velocityMultiplier: 0,
         onGrab: () => {
           draggingRef.current = true;
           el.style.zIndex = "60";
           floatMap.current.get(obj.id)?.pause();
+          // Shrink back to tray size while held, so the release
+          // measurement and drag feel use the unscaled image.
+          if (img) animate(img, { scale: 1, duration: 200, ease: "out(2)" });
           // Lifting the equipped object instantly resets the theme;
           // it re-applies only if it snaps back onto the head.
           if (equippedRef.current === obj.id) setEquip(null);
@@ -393,35 +441,39 @@ export default function Home() {
   return (
     <div
       ref={sceneRef}
-      className="relative flex h-screen w-full flex-row items-center justify-center overflow-hidden"
+      className="relative flex min-h-screen w-full flex-row items-start justify-center overflow-y-auto md:h-screen md:items-center md:overflow-hidden"
       style={{ backgroundImage: "url('/diamond-sunset-bg.svg')" }}
     >
-      {/* Theme gradient — crossfades over the default background */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-0 transition-opacity duration-700 ease-out"
-        style={{
-          background: activeTheme?.gradient,
-          opacity: activeTheme ? 1 : 0,
-        }}
-      />
+      {/* One static layer per theme — only the active one is opaque, so
+          swapping or removing a hat crossfades instead of hard-cutting. */}
+      {OBJECTS.filter((o) => o.theme).map((o) => (
+        <div
+          key={o.id}
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-0 transition-opacity duration-700 ease-out"
+          style={{
+            background: o.theme!.gradient,
+            opacity: equipped === o.id ? 1 : 0,
+          }}
+        />
+      ))}
 
       {/* Left rail */}
-      <section className="relative z-20 hidden h-full w-1/4 flex-col justify-center px-6 md:flex">
+      <section className="relative z-20 hidden h-full w-1/4 flex-col items-end justify-center py-6 pl-4 pr-1 md:flex">
         <div
           key={equipped ?? "none"}
-          className="transition-opacity duration-500"
+          className="w-full max-w-[320px] transition-opacity duration-500"
           style={{ opacity: activeTheme ? 1 : 0 }}
         >
-          {activeTheme?.side}
+          {activeTheme?.sideLeft ?? activeTheme?.side}
         </div>
       </section>
 
       {/* Middle */}
-      <section className="relative z-20 flex w-full flex-col items-center justify-center px-4 pb-28 pt-6 font-mono md:w-2/4">
+      <section className="relative z-20 flex w-full flex-col items-center justify-center px-4 pb-16 pt-10 font-mono md:w-2/4 md:pb-28 md:pt-6">
         <h1
           key={`head-${equipped ?? "default"}`}
-          className="mb-3 flex h-9 items-center text-center text-2xl font-bold tracking-tight transition-colors"
+          className="mb-3 flex items-center text-center text-2xl font-bold tracking-tight transition-colors md:h-9"
           style={{ color: activeTheme ? "#ffffff" : "inherit" }}
         >
           {activeTheme?.heading ?? "hey, i'm vincent"}
@@ -490,42 +542,34 @@ export default function Home() {
 
         <p
           key={`bio-${equipped ?? "default"}`}
-          className="m-4 h-28 max-w-[640px] overflow-hidden px-4 text-center text-sm leading-relaxed transition-colors sm:text-base"
+          className="m-4 max-w-[640px] px-4 text-center text-sm leading-relaxed transition-colors sm:text-base md:h-28 md:overflow-hidden"
           style={{ color: activeTheme ? "rgba(255,255,255,0.9)" : "inherit" }}
         >
           {activeTheme?.blurb ?? (
             <>
               Hey! I&apos;m Vincent, a Computing and Financial Management
-              student at the University of Waterloo with hands-on experience in
-              software development and data projects. Last summer, I worked on
-              ETL Pipelines and automating workflows at{" "}
-              <a
-                href="https://www.usepepper.com/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <span style={{ color: "rgba(56, 151, 59, 1)" }}>Pepper</span>
-              </a>
-              . When I&apos;m not coding, you can find me chilling with my two
-              cats. Grab a hat from the tray and drop it on the cat.
+              student at the University of Waterloo with internship experience in
+              software development and trading.
             </>
           )}
         </p>
       </section>
 
       {/* Right rail */}
-      <section className="relative z-20 hidden h-full w-1/4 flex-col justify-center px-6 md:flex">
+      <section className="relative z-20 hidden h-full w-1/4 flex-col items-start justify-center py-6 pl-1 pr-4 md:flex">
         <div
           key={(equipped ?? "none") + "-r"}
-          className="transition-opacity duration-500"
+          className="w-full max-w-[320px] transition-opacity duration-500"
           style={{ opacity: activeTheme ? 1 : 0 }}
         >
-          {equipped === "github" ? null : activeTheme?.side}
+          {equipped === "github"
+            ? null
+            : (activeTheme?.sideRight ?? activeTheme?.side)}
         </div>
       </section>
 
-      {/* Object tray — always mounted so draggables stay bound */}
-      <div className="fixed inset-x-0 bottom-0 z-40 flex items-end justify-center gap-3 px-4 py-3">
+      {/* Object tray — desktop only; mobile gets a plain scrollable page */}
+      <div className="fixed inset-x-0 bottom-0 z-40 hidden items-end justify-center gap-3 px-4 py-3 md:flex">
         <div className="flex items-end gap-3 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 backdrop-blur-md">
           {OBJECTS.map((obj) => (
             <div
@@ -541,7 +585,7 @@ export default function Home() {
                 src={obj.src}
                 alt={obj.label}
                 draggable={false}
-                className="h-full w-full object-contain drop-shadow-md"
+                className="h-full w-full origin-bottom object-contain drop-shadow-md"
               />
             </div>
           ))}
