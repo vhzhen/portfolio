@@ -145,7 +145,6 @@ const OBJECTS: DragObject[] = [
   },
   {
     id: "cap-1",
-    // TODO: swap /cap-1.svg for a propeller-hat asset.
     label: "Propeller hat",
     src: "/cap-1.svg",
     w: 100,

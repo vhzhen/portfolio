@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "...",
-  description: "Vincent's Website",
+  title: "Vincent Zhen",
+  description: "Vincent Zhen — Computing & Financial Management @ UWaterloo",
 };
 
 export default function RootLayout({

@@ -123,9 +123,9 @@ export default function BreakTransition({
         const els = shards();
         if (!els.length) return;
         animate(els, {
-          x: (_: HTMLElement, i: number) => scatterRef.current[i]?.tx ?? 0,
-          y: (_: HTMLElement, i: number) => scatterRef.current[i]?.ty ?? 0,
-          rotate: (_: HTMLElement, i: number) =>
+          x: (_: unknown, i: number) => scatterRef.current[i]?.tx ?? 0,
+          y: (_: unknown, i: number) => scatterRef.current[i]?.ty ?? 0,
+          rotate: (_: unknown, i: number) =>
             scatterRef.current[i]?.rot ?? 0,
           scale: [1, 0.35],
           opacity: [1, 0],
