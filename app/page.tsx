@@ -194,9 +194,9 @@ const OBJECTS: DragObject[] = [
       heading: "Off the clock",
       blurb: (
         <>
-          When the propeller hat goes on, work goes off. You&apos;ll find me
-          Minecraft speedrunning, surviving (or dying) in Dead by Daylight, or
-          out fishing. Take the hat off to get back to business.
+          Off work, you might find me
+          Minecraft speedrunning, surviving in Dead by Daylight, or
+          out fishing.
         </>
       ),
       side: <FishingGame />,
