@@ -325,9 +325,8 @@ export default function EtlPipeline() {
         ))}
       </svg>
       <p className="mt-2 text-[11px] leading-snug text-white/55">
-        An Extract–Transform–Load pipeline: data is pulled from multiple
-        sources, reshaped into a consistent format, and loaded into a
-        database.
+        Designed and deployed ETL pipelines for Syndigo, Frosty Acres, and Essendant via API/SFTP integrations, ingesting new items weekly.
+
       </p>
     </div>
   );
