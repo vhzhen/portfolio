@@ -18,6 +18,9 @@ const END = "2026-04-24";
 // Draw-on animation should only play the first time the chart is seen
 // this session, not on every re-equip of the TD cap.
 let hasAnimated = false;
+// Fetched price data cached at module scope — re-equipping the TD cap
+// reuses this instead of hitting the API again.
+let cachedData: Point[] | null = null;
 
 // Snap a target date to the closest trading day present in the series,
 // so timeToCoordinate() always resolves to a real x position.
@@ -74,11 +77,16 @@ export default function TdChart() {
     (async () => {
       let data: Point[] = [];
       try {
-        const res = await fetch("/api/td");
-        if (!res.ok) throw new Error();
-        const json = await res.json();
-        data = json.data ?? [];
-        if (!data.length) throw new Error();
+        if (cachedData) {
+          data = cachedData;
+        } else {
+          const res = await fetch("/api/td");
+          if (!res.ok) throw new Error();
+          const json = await res.json();
+          data = json.data ?? [];
+          if (!data.length) throw new Error();
+          cachedData = data;
+        }
       } catch {
         if (!disposed) setStatus("error");
         return;
@@ -126,7 +134,7 @@ export default function TdChart() {
         // "draws" left-to-right instead of the axis stretching.
         const from = full[0].time;
         const to = full[full.length - 1].time;
-        const DURATION = 1100;
+        const DURATION = 2200;
         const t0 = performance.now();
         const tick = (now: number) => {
           if (disposed || !chart) return;

@@ -8,103 +8,21 @@ const CARD =
 const HEAD = "font-mono text-xs uppercase tracking-widest text-white/70";
 
 /* ------------------------------------------------------------------ *
- * Fishing minigame — cast, wait for the bite, reel in time.
+ * Fishing — static photo.
  * ------------------------------------------------------------------ */
 
-type Phase = "idle" | "waiting" | "bite" | "done";
-const CATCH = ["🐟", "🐠", "🐡", "🦐", "🦀", "🐙", "🥾", "🪣"];
-
 export function FishingGame() {
-  const [phase, setPhase] = useState<Phase>("idle");
-  const [msg, setMsg] = useState("Cast your line to start.");
-  const [score, setScore] = useState(0);
-  const biteRef = useRef<number | null>(null);
-  const missRef = useRef<number | null>(null);
-
-  const clearTimers = useCallback(() => {
-    if (biteRef.current) window.clearTimeout(biteRef.current);
-    if (missRef.current) window.clearTimeout(missRef.current);
-    biteRef.current = null;
-    missRef.current = null;
-  }, []);
-
-  useEffect(() => clearTimers, [clearTimers]);
-
-  const cast = () => {
-    clearTimers();
-    setPhase("waiting");
-    setMsg("Waiting for a bite…");
-    biteRef.current = window.setTimeout(
-      () => {
-        setPhase("bite");
-        setMsg("❗ REEL IT IN!");
-        missRef.current = window.setTimeout(() => {
-          setPhase("done");
-          setMsg("It got away… try again.");
-        }, 1100);
-      },
-      1400 + Math.random() * 3000,
-    );
-  };
-
-  const reel = () => {
-    if (phase === "waiting") {
-      clearTimers();
-      setPhase("done");
-      setMsg("Too early — you spooked it.");
-      return;
-    }
-    if (phase === "bite") {
-      clearTimers();
-      const fish = CATCH[Math.floor(Math.random() * CATCH.length)];
-      setScore((s) => s + 1);
-      setPhase("done");
-      setMsg(`Nice catch! ${fish}`);
-    }
-  };
-
-  const active = phase === "waiting" || phase === "bite";
-
   return (
     <div className={CARD}>
-      <div className="mb-2 flex items-center justify-between">
-        <p className={HEAD}>{"// fishing"}</p>
-        <span className="font-mono text-[11px] text-white/60">
-          caught: {score}
-        </span>
+      <p className={`${HEAD} mb-2`}>{"// fishing"}</p>
+      <div className="overflow-hidden rounded-md border border-white/10">
+        <img
+          src="/fishing.png"
+          alt="Out fishing"
+          className="h-auto w-full object-cover"
+          draggable={false}
+        />
       </div>
-
-      <div
-        className={`relative flex h-28 items-end justify-center overflow-hidden rounded-md border border-white/10 transition-colors ${
-          phase === "bite" ? "bg-sky-500/30" : "bg-sky-900/30"
-        }`}
-      >
-        <span
-          className="absolute text-2xl transition-all duration-300"
-          style={{
-            top: phase === "bite" ? "54%" : "30%",
-            transform: "translateX(-50%)",
-            left: "50%",
-          }}
-        >
-          🎣
-        </span>
-        {phase === "bite" && (
-          <span className="absolute left-1/2 top-[60%] -translate-x-1/2 animate-ping text-lg">
-            ❗
-          </span>
-        )}
-        <div className="h-3 w-full bg-sky-400/20" />
-      </div>
-
-      <p className="mt-2 h-4 text-center text-xs text-white/75">{msg}</p>
-
-      <button
-        onClick={active ? reel : cast}
-        className="mt-2 w-full rounded-md border border-white/20 bg-white/5 py-1.5 font-mono text-xs text-white transition-colors hover:bg-white/15"
-      >
-        {active ? "Reel! 🪝" : "Cast 🎣"}
-      </button>
     </div>
   );
 }
@@ -515,10 +433,17 @@ export function DbdSkillCheck() {
   const [zone, setZone] = useState(220); // zone start angle (deg)
   const [result, setResult] = useState<"great" | "good" | "miss" | null>(null);
   const [great, setGreat] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const [good, setGood] = useState(0);
+  const [paused, setPaused] = useState(
+    () => sessionStorage.getItem("dbd-paused") === "true",
+  );
 
   const ZONE_W = 55; // success arc width
   const GREAT_W = 12; // perfect sub-zone at the start of the zone
+
+  useEffect(() => {
+    sessionStorage.setItem("dbd-paused", String(paused));
+  }, [paused]);
 
   useEffect(() => {
     let last = performance.now();
@@ -543,6 +468,7 @@ export function DbdSkillCheck() {
   }, [paused]);
 
   const attempt = useCallback(() => {
+    if (paused) return;
     const a = angleRef.current;
     const rel = (a - zone + 360) % 360;
     let r: "great" | "good" | "miss";
@@ -551,8 +477,9 @@ export function DbdSkillCheck() {
     else r = "miss";
     setResult(r);
     if (r === "great") setGreat((g) => g + 1);
-    if (r !== "miss") setZone(Math.floor(Math.random() * 360)); // move it
-  }, [zone]);
+    if (r === "good") setGood((g) => g + 1);
+    if (r !== "miss") setZone(Math.floor(Math.random() * 360));
+  }, [zone, paused]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -587,12 +514,13 @@ export function DbdSkillCheck() {
           : "text-white/50";
 
   return (
-    <div className={CARD}>
+    <div className={`${CARD} relative`}>
       <div className="mb-2 flex items-center justify-between">
         <p className={HEAD}>{"// dead by daylight"}</p>
-        <span className="font-mono text-[11px] text-white/60">
-          great: {great}
-        </span>
+        <div className="flex flex-col items-end font-mono text-[11px] text-white/60">
+          <span>great: {great}</span>
+          <span>good: {good}</span>
+        </div>
       </div>
 
       <button
@@ -636,24 +564,24 @@ export function DbdSkillCheck() {
         </svg>
       </button>
 
-      <div className="mt-1 relative">
-        <p className={`text-center font-mono text-xs ${tone}`}>
-          {result === "great"
+      <p className={`mt-1 text-center font-mono text-xs ${tone}`}>
+        {paused && result !== null
+          ? ""
+          : result === "great"
             ? "Great!"
             : result === "good"
               ? "Good."
               : result === "miss"
                 ? "Miss."
                 : "[Space]"}
-        </p>
+      </p>
 
-        <button
-          onClick={() => setPaused(!paused)}
-          className="absolute right-0 top-0 whitespace-nowrap rounded-md border border-white/20 bg-white/5 px-2 py-1 font-mono text-xs text-white transition-colors hover:bg-white/15"
-        >
-          {paused ? "▶" : "⏸"}
-        </button>
-      </div>
+      <button
+        onClick={() => { if (!paused) setResult(null); setPaused(!paused); }}
+        className="absolute bottom-3 right-3 whitespace-nowrap rounded-md border border-white/20 bg-white/5 px-2 py-1 font-mono text-xs text-white transition-colors hover:bg-white/15"
+      >
+        {paused ? "▶" : "⏸"}
+      </button>
     </div>
   );
 }

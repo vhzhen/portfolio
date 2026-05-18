@@ -63,6 +63,30 @@ body {
   @apply w-20 mx-1 px-13;
 }
 
+/* Subtle scrollbar that blends with the dark glass panels instead of the
+   default white bar with grey ovals. */
+.thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+.thin-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.18);
+  border-radius: 9999px;
+}
+.thin-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.32);
+}
+.thin-scrollbar::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);

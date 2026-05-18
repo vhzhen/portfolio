@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Github, FileText, Code, Mail, TrendingUp } from "lucide-react";
+import { Github, FileText, Code, Mail, Settings } from "lucide-react";
 import { TransitionLink } from "./components/PageTransition";
 import TdChart from "./components/TdChart";
 import EtlPipeline from "./components/EtlPipeline";
@@ -57,29 +57,6 @@ const highlight = (title: string, body: string) => (
 
 const OBJECTS: DragObject[] = [
   {
-    id: "crown",
-    label: "Crown",
-    src: "/crown.webp",
-    w: 96,
-    h: 60,
-    theme: {
-      title: "👑",
-      gradient:
-        "linear-gradient(160deg, #f9d976 0%, #f39f86 55%, #b06ab3 100%)",
-      heading: "certified royalty",
-      blurb: (
-        <>
-          The cat has assumed the throne. All hail. Drag the crown back to the
-          tray to return to commoner status.
-        </>
-      ),
-      side: highlight(
-        "// status",
-        "Monarch of the household. Two cats, one crown — succession disputed.",
-      ),
-    },
-  },
-  {
     id: "github",
     label: "GitHub hat",
     src: "/github-hat.svg",
@@ -92,8 +69,8 @@ const OBJECTS: DragObject[] = [
       heading: "Projects",
       blurb: (
         <>
-          When the GitHub hat is on, I&apos;m shipping. Check the projects on the
-          sides — or pull the hat off to go back home.
+          When the GitHub hat is on, I&apos;m shipping. Preview the projects on
+          the sides.
         </>
       ),
       side: <GithubProjects />,
@@ -113,15 +90,8 @@ const OBJECTS: DragObject[] = [
       heading: "Software Developer @ Pepper",
       blurb: (
         <>
-          Last summer at{" "}
-          <a href="https://www.usepepper.com/" target="_blank" rel="noreferrer">
-            <span className="font-semibold underline">Pepper</span>
-          </a>{" "}
-          I built ETL pipelines pulling from APIs, SFTP, and web scraping —
-          parsing unstructured pages and files into structured JSON, staging to
-          AWS S3 where a Lambda verified each file before landing every JSON
-          object as a MongoDB document. Take the cap off and the cat goes back
-          to civilian life.
+          Built scalable foodservice data + AI systems with Python, Playwright,
+          AWS, MongoDB, Snowflake, OpenAI Vision, and n8n.
         </>
       ),
       side: highlight(
@@ -145,16 +115,9 @@ const OBJECTS: DragObject[] = [
       heading: "ETF Trader @ TD Securities",
       blurb: (
         <>
-          ETF Trading, Global Markets — Jan–Apr 2026. Built a PyQt5 tool to
-          analyze cross-desk ETF flow (DMA/ATS/ETF) and surface spread
-          inefficiencies, a FIX-protocol GUI automating ETF creation/redemption
-          for BlackRock &amp; Vanguard (cutting execution from 3–4 min to
-          &lt;2s), and refactored a VB ETF parser into Python with Bloomberg
-          API checks and SQL logging. More on the{" "}
-          <TransitionLink href="/td">
-            <span className="font-semibold underline">TD page</span>
-          </TransitionLink>
-          .
+          Global Markets Intern on the ETF Trading Desk, building Python/FIX
+          automation and analytics tools to streamline ETF creation/redemption
+          workflows and uncover trading inefficiencies.
         </>
       ),
       side: highlight(
@@ -191,12 +154,11 @@ const OBJECTS: DragObject[] = [
       title: "🎈",
       gradient:
         "linear-gradient(160deg, #1e1b4b 0%, #4f46e5 55%, #818cf8 100%)",
-      heading: "Off the clock",
+      heading: "Hobbies",
       blurb: (
         <>
-          Off work, you might find me
-          Minecraft speedrunning, surviving in Dead by Daylight, or
-          out fishing.
+          Off work, you might find me Minecraft speedrunning, surviving in Dead
+          by Daylight, or out fishing.
         </>
       ),
       side: <FishingGame />,
@@ -207,21 +169,6 @@ const OBJECTS: DragObject[] = [
         </div>
       ),
       sideRight: <FishingGame />,
-    },
-  },
-  {
-    id: "cap-2",
-    label: "Company cap",
-    src: "/cap-2.svg",
-    w: 100,
-    h: 65,
-    theme: {
-      title: "🧢",
-      gradient:
-        "linear-gradient(160deg, #4c0519 0%, #be123c 55%, #fb7185 100%)",
-      heading: "@ company",
-      blurb: <>Another placeholder cap. Same deal — make it yours.</>,
-      side: highlight("// company", "Swap this out for a real internship."),
     },
   },
 ];
@@ -251,7 +198,7 @@ export default function Home() {
         return;
       }
       const obj = OBJECTS.find((o) => o.id === equippedRef.current);
-      document.title = obj?.theme?.title ?? "...";
+      document.title = obj?.theme?.title ?? "Vincent";
     };
 
     const setEquip = (id: string | null) => {
@@ -409,6 +356,16 @@ export default function Home() {
     };
   }, []);
 
+  // The heading/bio reserve different heights per theme, so swapping a hat
+  // shifts the cat vertically. Re-run the resize snap once the new themed
+  // content has painted to keep the equipped hat glued to the head.
+  useEffect(() => {
+    const id = requestAnimationFrame(() =>
+      window.dispatchEvent(new Event("resize")),
+    );
+    return () => cancelAnimationFrame(id);
+  }, [equipped]);
+
   const activeTheme = OBJECTS.find((o) => o.id === equipped)?.theme;
 
   return (
@@ -431,113 +388,127 @@ export default function Home() {
         />
       ))}
 
-      {/* Left rail */}
-      <section className="relative z-20 hidden h-full w-1/4 flex-col items-end justify-center py-6 pl-4 pr-1 md:flex">
-        <div
-          key={equipped ?? "none"}
-          className="w-full max-w-[320px] transition-opacity duration-500"
-          style={{ opacity: activeTheme ? 1 : 0 }}
-        >
-          {activeTheme?.sideLeft ?? activeTheme?.side}
-        </div>
-      </section>
+      {/* Extras — home page only (no hat equipped). Links to the TD page. */}
+      <div
+        className="fixed right-4 top-4 z-40 transition-opacity duration-300"
+        style={{
+          opacity: equipped ? 0 : 1,
+          pointerEvents: equipped ? "none" : "auto",
+        }}
+      >
+        <TransitionLink href="/td">
+          <Button
+            className="btn border-white/25 bg-black/45 text-white backdrop-blur-md transition-transform duration-200 hover:scale-110 hover:bg-black/60 hover:text-white"
+            variant="outline"
+          >
+            <Settings />
+            Extras
+          </Button>
+        </TransitionLink>
+      </div>
 
-      {/* Middle */}
-      <section className="relative z-20 flex w-full flex-col items-center justify-center px-4 pb-16 pt-10 font-mono md:w-2/4 md:pb-28 md:pt-6">
-        <h1
-          key={`head-${equipped ?? "default"}`}
-          className="mb-3 flex items-center text-center text-2xl font-bold tracking-tight transition-colors md:h-9"
-          style={{ color: activeTheme ? "#ffffff" : "inherit" }}
-        >
-          {activeTheme?.heading ?? "hey, i'm vincent"}
-        </h1>
-
-        <section
-          ref={catRef}
-          className="m-2 w-[clamp(200px,50vw,380px)] overflow-hidden rounded-lg"
-        >
-          <img
-            src="/cat.jpeg"
-            alt="cat"
-            className="h-auto w-full"
-            draggable={false}
-          />
+      {/* Centered content wrapper — caps total width so rails stay grouped
+          near the cat on wide/ultrawide screens (whitespace at the edges). */}
+      <div className="relative z-20 mx-auto flex w-full max-w-[1500px] flex-row items-start justify-center md:h-screen md:items-center">
+        {/* Left rail */}
+        <section className="hidden h-full w-[30%] flex-col items-end justify-center py-6 pl-4 pr-1 md:flex">
+          <div
+            key={equipped ?? "none"}
+            className="w-full max-w-[460px] transition-opacity duration-500"
+            style={{ opacity: activeTheme ? 1 : 0 }}
+          >
+            {activeTheme?.sideLeft ?? activeTheme?.side}
+          </div>
         </section>
 
-        <div className="mt-2 flex flex-wrap justify-center gap-2 px-4">
-          <Button
-            className="btn border-white/20 bg-white/5 text-white backdrop-blur-sm transition-transform duration-200 hover:scale-110 hover:bg-white/15 hover:text-white"
-            variant="outline"
-            onClick={() => window.open("https://github.com/vhzhen", "_blank")}
+        {/* Middle */}
+        <section className="flex w-full flex-col items-center justify-center px-4 pb-16 pt-10 font-mono md:w-[40%] md:pb-28 md:pt-6">
+          <h1
+            key={`head-${equipped ?? "default"}`}
+            className="mb-1 flex items-end justify-center text-center text-2xl font-bold tracking-tight transition-colors md:h-[4.5rem] md:overflow-hidden"
+            style={{ color: activeTheme ? "#ffffff" : "inherit" }}
           >
-            <Github />
-            GitHub
-          </Button>
-          <Button
-            className="btn border-white/20 bg-white/5 text-white backdrop-blur-sm transition-transform duration-200 hover:scale-110 hover:bg-white/15 hover:text-white"
-            variant="outline"
-            onClick={() =>
-              (window.location.href =
-                "mailto:vhzhen@uwaterloo.ca?subject=Website Inquiry&body=Hi there!")
-            }
+            {activeTheme?.heading ?? "hey, i'm vincent"}
+          </h1>
+
+          <section
+            ref={catRef}
+            className="m-2 w-[clamp(200px,50vw,380px)] overflow-hidden rounded-lg"
           >
-            <Mail />
-            Mail
-          </Button>
-          <Button
-            className="btn border-white/20 bg-white/5 text-white backdrop-blur-sm transition-transform duration-200 hover:scale-110 hover:bg-white/15 hover:text-white"
-            variant="outline"
-            onClick={() =>
-              window.open("https://devpost.com/vincentzhen2006", "_blank")
-            }
-          >
-            <Code />
-            Devpost
-          </Button>
-          <Button
-            className="btn border-white/20 bg-white/5 text-white backdrop-blur-sm transition-transform duration-200 hover:scale-110 hover:bg-white/15 hover:text-white"
-            variant="outline"
-            onClick={() => window.open("/resume.pdf", "_blank")}
-          >
-            <FileText />
-            Resume
-          </Button>
-          <TransitionLink href="/td">
+            <img
+              src="/cat.jpeg"
+              alt="cat"
+              className="h-auto w-full"
+              draggable={false}
+            />
+          </section>
+
+          <div className="mt-2 flex flex-wrap justify-center gap-2 px-4">
             <Button
               className="btn border-white/20 bg-white/5 text-white backdrop-blur-sm transition-transform duration-200 hover:scale-110 hover:bg-white/15 hover:text-white"
               variant="outline"
+              onClick={() => window.open("https://github.com/vhzhen", "_blank")}
             >
-              <TrendingUp />
-              TD
+              <Github />
+              GitHub
             </Button>
-          </TransitionLink>
-        </div>
+            <Button
+              className="btn border-white/20 bg-white/5 text-white backdrop-blur-sm transition-transform duration-200 hover:scale-110 hover:bg-white/15 hover:text-white"
+              variant="outline"
+              onClick={() =>
+                (window.location.href =
+                  "mailto:vhzhen@uwaterloo.ca?subject=Website Inquiry&body=Hi there!")
+              }
+            >
+              <Mail />
+              Mail
+            </Button>
+            <Button
+              className="btn border-white/20 bg-white/5 text-white backdrop-blur-sm transition-transform duration-200 hover:scale-110 hover:bg-white/15 hover:text-white"
+              variant="outline"
+              onClick={() =>
+                window.open("https://devpost.com/vincentzhen2006", "_blank")
+              }
+            >
+              <Code />
+              Devpost
+            </Button>
+            <Button
+              className="btn border-white/20 bg-white/5 text-white backdrop-blur-sm transition-transform duration-200 hover:scale-110 hover:bg-white/15 hover:text-white"
+              variant="outline"
+              onClick={() => window.open("/resume.pdf", "_blank")}
+            >
+              <FileText />
+              Resume
+            </Button>
+          </div>
 
-        <p
-          key={`bio-${equipped ?? "default"}`}
-          className="m-4 max-w-[640px] px-4 text-center text-sm leading-relaxed transition-colors sm:text-base md:h-28 md:overflow-hidden"
-          style={{ color: activeTheme ? "rgba(255,255,255,0.9)" : "inherit" }}
-        >
-          {activeTheme?.blurb ?? (
-            <>
-              Hey! I&apos;m Vincent, a Computing and Financial Management
-              student at the University of Waterloo with internship experience in
-              software development and trading.
-            </>
-          )}
-        </p>
-      </section>
+          <p
+            key={`bio-${equipped ?? "default"}`}
+            className="thin-scrollbar m-4 max-w-[640px] px-4 text-center text-sm leading-relaxed transition-colors sm:text-base md:h-32 md:overflow-auto"
+            style={{ color: activeTheme ? "rgba(255,255,255,0.9)" : "inherit" }}
+          >
+            {activeTheme?.blurb ?? (
+              <>
+                Hey! I&apos;m Vincent, a Computing and Financial Management
+                student at the University of Waterloo with internship experience
+                in software development and trading.
+              </>
+            )}
+          </p>
+        </section>
 
-      {/* Right rail */}
-      <section className="relative z-20 hidden h-full w-1/4 flex-col items-start justify-center py-6 pl-1 pr-4 md:flex">
-        <div
-          key={(equipped ?? "none") + "-r"}
-          className="w-full max-w-[320px] transition-opacity duration-500"
-          style={{ opacity: activeTheme ? 1 : 0 }}
-        >
-          {activeTheme?.sideRight ?? activeTheme?.side}
-        </div>
-      </section>
+        {/* Right rail */}
+        <section className="hidden h-full w-[30%] flex-col items-start justify-center py-6 pl-1 pr-4 md:flex">
+          <div
+            key={(equipped ?? "none") + "-r"}
+            className="w-full max-w-[460px] transition-opacity duration-500"
+            style={{ opacity: activeTheme ? 1 : 0 }}
+          >
+            {activeTheme?.sideRight ?? activeTheme?.side}
+          </div>
+        </section>
+      </div>
 
       {/* Object tray — desktop only; mobile gets a plain scrollable page */}
       <div className="fixed inset-x-0 bottom-0 z-40 hidden items-end justify-center gap-3 px-4 py-3 md:flex">

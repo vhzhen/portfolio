@@ -6,7 +6,7 @@ import { useEffect, useState, useSyncExternalStore } from "react";
 export const PROJECTS: { name: string; desc: string; href: string }[] = [
   {
     name: "Portfolio",
-    desc: "This site. Next.js + anime.js, draggable cat merch.",
+    desc: "This site! Next.js + anime.js.",
     href: "https://github.com/vhzhen/portfolio",
   },
   {
@@ -17,7 +17,7 @@ export const PROJECTS: { name: string; desc: string; href: string }[] = [
   {
     name: "Audiage",
     desc: "Award winning IgnitionHacks project. Software targeted to prevent hearing loss. ",
-    href: "https://devpost.com/software/audiage",
+    href: "https://github.com/vhzhen/audiage",
   },
   {
     name: "More On Github",
@@ -126,9 +126,25 @@ export function GithubProjects() {
   );
 }
 
+// Local preview images — takes priority over the GitHub opengraph fetch.
+const LOCAL_PREVIEWS: Record<string, string> = {
+  "Patient Intake Form": "/patient-intake-form.png",
+};
+
 /** GitHub repo social image, with a graceful fallback if it fails. */
 function RepoImage({ repo, name }: { repo: string | null; name: string }) {
   const [failed, setFailed] = useState(false);
+  const local = LOCAL_PREVIEWS[name];
+  if (local) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={local}
+        alt={`${name} preview`}
+        className="aspect-[2/1] w-full bg-black/40 object-cover"
+      />
+    );
+  }
   if (repo && !failed) {
     return (
       // eslint-disable-next-line @next/next/no-img-element

@@ -61,7 +61,7 @@ export default function ScrapeDemo() {
               1 product
             </span>
           </div>
-          <pre className="max-h-[220px] overflow-auto p-2 text-[9px] leading-[1.45] text-emerald-200/85">
+          <pre className="thin-scrollbar max-h-[220px] overflow-auto p-2 text-[9px] leading-[1.45] text-emerald-200/85">
             <code>{PRETTY}</code>
           </pre>
         </div>
