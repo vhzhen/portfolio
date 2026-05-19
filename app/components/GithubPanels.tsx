@@ -20,9 +20,9 @@ export const PROJECTS: { name: string; desc: string; href: string }[] = [
     href: "https://github.com/vhzhen/audiage",
   },
   {
-    name: "More On Github",
-    desc: "Everything else lives here.",
-    href: "https://github.com/vhzhen",
+    name: "Robo Stock Portfolio Advisor",
+    desc: "An algorithm that selects and optimizes a 12-stock portfolio from random stocks to match or outperform a benchmark based on TSX 60 and S&P 500 returns in the short term.",
+    href: "https://github.com/vhzhen/Robo-Stock-Portfolio-Advisor",
   },
 ];
 
@@ -44,6 +44,13 @@ const TOOLS: Record<string, Tool[]> = {
     { label: "Supabase", slug: "supabase" },
     { label: "Tailwind CSS", slug: "tailwindcss" },
     { label: "shadcn/ui", slug: "shadcnui" },
+  ],
+  "Robo Stock Portfolio Advisor": [
+    { label: "Python", slug: "python" },
+    { label: "pandas", slug: "pandas" },
+    { label: "NumPy", slug: "numpy" },
+    { label: "yfinance" },
+    { label: "Matplotlib" },
   ],
   Audiage: [
     { label: "Next.js", slug: "nextdotjs" },

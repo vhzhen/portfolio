@@ -186,8 +186,49 @@ export default function Home() {
   const draggingRef = useRef(false);
 
   const [equipped, setEquipped] = useState<string | null>(null);
+  // The draggable-hat experience needs vertical room. Under 600px tall it's
+  // unusable (hat bar + cat + text collide), so the whole feature is disabled.
+  const [hatsEnabled, setHatsEnabled] = useState(true);
 
   useEffect(() => {
+    const check = () => setHatsEnabled(window.innerHeight >= 600);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  // When the feature turns off (window shrank past the threshold), drop any
+  // equipped hat so the themed rails/gradient revert to the default view.
+  useEffect(() => {
+    if (!hatsEnabled) {
+      equippedRef.current = null;
+      setEquipped(null);
+    }
+  }, [hatsEnabled]);
+
+  // Warm the browser cache for the heavy fishing photo on page open so
+  // equipping the hobbies hat is instant instead of waiting on a fetch.
+  // Deferred to idle time so it never competes with the initial paint.
+  useEffect(() => {
+    const preload = () => {
+      const img = new Image();
+      img.src = "/fishing.png";
+    };
+    const w = window as typeof window & {
+      requestIdleCallback?: (cb: () => void) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+    if (w.requestIdleCallback) {
+      const id = w.requestIdleCallback(preload);
+      return () => w.cancelIdleCallback?.(id);
+    }
+    const t = setTimeout(preload, 1500);
+    return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    if (!hatsEnabled) return;
+
     const drags = dragMap.current;
     const floats = floatMap.current;
 
@@ -353,7 +394,7 @@ export default function Home() {
       drags.clear();
       floats.clear();
     };
-  }, []);
+  }, [hatsEnabled]);
 
   // The heading/bio reserve different heights per theme, so swapping a hat
   // shifts the cat vertically. Re-run the resize snap once the new themed
@@ -427,7 +468,7 @@ export default function Home() {
             className="mb-1 flex items-end justify-center text-center text-2xl font-bold tracking-tight transition-colors md:h-[clamp(2.75rem,8vh,4.5rem)] md:overflow-hidden md:[@media(max-height:760px)]:text-xl"
             style={{ color: activeTheme ? "#ffffff" : "inherit" }}
           >
-            {activeTheme?.heading ?? "hey, i'm vincent"}
+            {activeTheme?.heading ?? " "}
           </h1>
 
           <section
@@ -509,10 +550,12 @@ export default function Home() {
         </section>
       </div>
 
-      {/* Object tray — desktop only; mobile gets a plain scrollable page */}
-      <div className="fixed inset-x-0 bottom-0 z-40 hidden items-end justify-center gap-3 px-4 py-3 md:flex">
-        <div className="flex items-end gap-3 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 backdrop-blur-md">
-          {OBJECTS.map((obj) => (
+      {/* Object tray — desktop only; mobile gets a plain scrollable page.
+          Hidden entirely when the viewport is too short for the feature. */}
+      {hatsEnabled && (
+        <div className="fixed inset-x-0 bottom-0 z-40 hidden items-end justify-center gap-3 px-4 py-3 md:flex">
+          <div className="flex items-end gap-3 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 backdrop-blur-md">
+            {OBJECTS.map((obj) => (
             <div
               key={obj.id}
               ref={(node) => {
@@ -529,9 +572,10 @@ export default function Home() {
                 className="h-full w-full origin-bottom object-contain drop-shadow-md"
               />
             </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
