@@ -370,7 +370,7 @@ export default function Home() {
   return (
     <div
       ref={sceneRef}
-      className="relative flex min-h-screen w-full flex-row items-center justify-center overflow-y-auto md:h-screen md:overflow-hidden"
+      className="relative flex min-h-screen w-full flex-row items-start justify-center overflow-y-auto md:h-screen md:items-center md:overflow-hidden"
       style={{ backgroundImage: "url('/diamond-sunset-bg.svg')" }}
     >
       {/* One static layer per theme — only the active one is opaque, so
@@ -408,7 +408,7 @@ export default function Home() {
 
       {/* Centered content wrapper — caps total width so rails stay grouped
           near the cat on wide/ultrawide screens (whitespace at the edges). */}
-      <div className="relative z-20 mx-auto flex w-full max-w-[1500px] flex-row items-center justify-center md:h-screen">
+      <div className="relative z-20 mx-auto flex w-full max-w-[1500px] flex-row items-start justify-center md:h-screen md:items-center">
         {/* Left rail */}
         <section className="hidden h-full w-[30%] flex-col items-end justify-center py-6 pl-4 pr-1 md:flex">
           <div
@@ -421,7 +421,7 @@ export default function Home() {
         </section>
 
         {/* Middle */}
-        <section className="flex w-full flex-col items-center justify-center px-4 pb-16 pt-10 font-mono md:h-screen md:w-[40%] md:justify-start md:pb-[clamp(4.5rem,12vh,7rem)] md:pt-6">
+        <section className="flex w-full flex-col items-center justify-center px-4 pb-16 pt-10 font-mono md:w-[40%] md:pb-[clamp(6rem,14vh,8.5rem)] md:pt-6">
           <h1
             key={`head-${equipped ?? "default"}`}
             className="mb-1 flex items-end justify-center text-center text-2xl font-bold tracking-tight transition-colors md:h-[clamp(2.75rem,8vh,4.5rem)] md:overflow-hidden md:[@media(max-height:760px)]:text-xl"
@@ -484,7 +484,7 @@ export default function Home() {
 
           <p
             key={`bio-${equipped ?? "default"}`}
-            className="thin-scrollbar m-4 max-w-[640px] px-4 text-center text-sm leading-relaxed transition-colors sm:text-base md:flex md:min-h-0 md:flex-1 md:flex-col md:justify-center md:overflow-auto md:[@media(max-height:760px)]:text-xs"
+            className="glass-scrollbar m-4 max-w-[640px] px-4 text-center text-sm leading-relaxed transition-colors sm:text-base md:h-[clamp(5rem,16vh,8rem)] md:overflow-auto"
             style={{ color: activeTheme ? "rgba(255,255,255,0.9)" : "inherit" }}
           >
             {activeTheme?.blurb ?? (
@@ -511,7 +511,7 @@ export default function Home() {
 
       {/* Object tray — desktop only; mobile gets a plain scrollable page */}
       <div className="fixed inset-x-0 bottom-0 z-40 hidden items-end justify-center gap-3 px-4 py-3 md:flex">
-        <div className="flex origin-bottom items-end gap-3 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 backdrop-blur-md transition-transform duration-300 md:[@media(max-height:820px)]:scale-90 md:[@media(max-height:680px)]:scale-75">
+        <div className="flex items-end gap-3 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 backdrop-blur-md">
           {OBJECTS.map((obj) => (
             <div
               key={obj.id}
