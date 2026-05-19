@@ -115,8 +115,8 @@ const OBJECTS: DragObject[] = [
       heading: "ETF Trader @ TD Securities",
       blurb: (
         <>
-          Global Markets Intern on the ETF Trading Desk, building Python/FIX
-          automation and analytics tools to streamline ETF creation/redemption
+          Building Python
+          automation + analytics tools to streamline ETF creation/redemption
           workflows and uncover trading inefficiencies.
         </>
       ),
@@ -370,7 +370,7 @@ export default function Home() {
   return (
     <div
       ref={sceneRef}
-      className="relative flex min-h-screen w-full flex-row items-start justify-center overflow-y-auto md:h-screen md:items-center md:overflow-hidden"
+      className="relative flex min-h-screen w-full flex-row items-center justify-center overflow-y-auto md:h-screen md:overflow-hidden"
       style={{ backgroundImage: "url('/diamond-sunset-bg.svg')" }}
     >
       {/* One static layer per theme — only the active one is opaque, so
@@ -408,7 +408,7 @@ export default function Home() {
 
       {/* Centered content wrapper — caps total width so rails stay grouped
           near the cat on wide/ultrawide screens (whitespace at the edges). */}
-      <div className="relative z-20 mx-auto flex w-full max-w-[1500px] flex-row items-start justify-center md:h-screen md:items-center">
+      <div className="relative z-20 mx-auto flex w-full max-w-[1500px] flex-row items-center justify-center md:h-screen">
         {/* Left rail */}
         <section className="hidden h-full w-[30%] flex-col items-end justify-center py-6 pl-4 pr-1 md:flex">
           <div
@@ -421,10 +421,10 @@ export default function Home() {
         </section>
 
         {/* Middle */}
-        <section className="flex w-full flex-col items-center justify-center px-4 pb-16 pt-10 font-mono md:w-[40%] md:pb-28 md:pt-6">
+        <section className="flex w-full flex-col items-center justify-center px-4 pb-16 pt-10 font-mono md:h-screen md:w-[40%] md:justify-start md:pb-[clamp(4.5rem,12vh,7rem)] md:pt-6">
           <h1
             key={`head-${equipped ?? "default"}`}
-            className="mb-1 flex items-end justify-center text-center text-2xl font-bold tracking-tight transition-colors md:h-[4.5rem] md:overflow-hidden"
+            className="mb-1 flex items-end justify-center text-center text-2xl font-bold tracking-tight transition-colors md:h-[clamp(2.75rem,8vh,4.5rem)] md:overflow-hidden md:[@media(max-height:760px)]:text-xl"
             style={{ color: activeTheme ? "#ffffff" : "inherit" }}
           >
             {activeTheme?.heading ?? "hey, i'm vincent"}
@@ -432,7 +432,7 @@ export default function Home() {
 
           <section
             ref={catRef}
-            className="m-2 w-[clamp(200px,50vw,380px)] overflow-hidden rounded-lg"
+            className="m-2 w-[min(50vw,380px,40vh)] overflow-hidden rounded-lg"
           >
             <img
               src="/cat.jpeg"
@@ -442,7 +442,7 @@ export default function Home() {
             />
           </section>
 
-          <div className="mt-2 flex flex-wrap justify-center gap-2 px-4">
+          <div className="mt-2 flex flex-wrap justify-center gap-2 px-4 md:[@media(max-height:820px)]:hidden">
             <Button
               className="btn border-white/20 bg-white/5 text-white backdrop-blur-sm transition-transform duration-200 hover:scale-110 hover:bg-white/15 hover:text-white"
               variant="outline"
@@ -484,7 +484,7 @@ export default function Home() {
 
           <p
             key={`bio-${equipped ?? "default"}`}
-            className="thin-scrollbar m-4 max-w-[640px] px-4 text-center text-sm leading-relaxed transition-colors sm:text-base md:h-32 md:overflow-auto"
+            className="thin-scrollbar m-4 max-w-[640px] px-4 text-center text-sm leading-relaxed transition-colors sm:text-base md:flex md:min-h-0 md:flex-1 md:flex-col md:justify-center md:overflow-auto md:[@media(max-height:760px)]:text-xs"
             style={{ color: activeTheme ? "rgba(255,255,255,0.9)" : "inherit" }}
           >
             {activeTheme?.blurb ?? (
@@ -511,7 +511,7 @@ export default function Home() {
 
       {/* Object tray — desktop only; mobile gets a plain scrollable page */}
       <div className="fixed inset-x-0 bottom-0 z-40 hidden items-end justify-center gap-3 px-4 py-3 md:flex">
-        <div className="flex items-end gap-3 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 backdrop-blur-md">
+        <div className="flex origin-bottom items-end gap-3 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 backdrop-blur-md transition-transform duration-300 md:[@media(max-height:820px)]:scale-90 md:[@media(max-height:680px)]:scale-75">
           {OBJECTS.map((obj) => (
             <div
               key={obj.id}

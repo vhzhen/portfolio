@@ -326,7 +326,6 @@ export default function EtlPipeline() {
       </svg>
       <p className="mt-2 text-[11px] leading-snug text-white/55">
         Designed and deployed ETL pipelines for Syndigo, Frosty Acres, and Essendant via API/SFTP integrations, ingesting new items weekly.
-
       </p>
     </div>
   );
