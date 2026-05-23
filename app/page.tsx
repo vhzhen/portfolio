@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Github, FileText, Code, Mail, Settings } from "lucide-react";
-import { TransitionLink } from "./components/PageTransition";
+import { RollTransitionLink } from "./components/RollTransition";
 import TdChart from "./components/TdChart";
 import EtlPipeline from "./components/EtlPipeline";
 import ScrapeDemo from "./components/ScrapeDemo";
@@ -69,8 +69,8 @@ const OBJECTS: DragObject[] = [
       heading: "Projects",
       blurb: (
         <>
-          When the GitHub hat is on, I&apos;m shipping. Preview the projects on
-          the sides.
+          I have a wide variety of full-stack projects, check them out! Preview them on
+          the side.
         </>
       ),
       side: <GithubProjects />,
@@ -436,7 +436,7 @@ export default function Home() {
           pointerEvents: equipped ? "none" : "auto",
         }}
       >
-        <TransitionLink href="/td">
+        <RollTransitionLink href="/td">
           <Button
             className="btn border-white/25 bg-black/45 text-white backdrop-blur-md transition-transform duration-200 hover:scale-110 hover:bg-black/60 hover:text-white"
             variant="outline"
@@ -444,7 +444,7 @@ export default function Home() {
             <Settings />
             Extras
           </Button>
-        </TransitionLink>
+        </RollTransitionLink>
       </div>
 
       {/* Centered content wrapper — caps total width so rails stay grouped

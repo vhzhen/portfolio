@@ -278,7 +278,7 @@ export default function EtlPipeline() {
         <Box
           x={192}
           w={112}
-          label="Backend Service"
+          label="Validate & Load"
           sub="AWS S3 → AWS Lambda"
         />
 

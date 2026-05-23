@@ -35,6 +35,8 @@ const TOOLS: Record<string, Tool[]> = {
   Portfolio: [
     { label: "Next.js", slug: "nextdotjs" },
     { label: "TypeScript", slug: "typescript" },
+    { label: "Tailwind CSS", slug: "tailwindcss" },
+    { label: "shadcn/ui", slug: "shadcnui" },
     { label: "anime.js" },
   ],
   "Patient Intake Form": [
