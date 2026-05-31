@@ -59,7 +59,7 @@ const OBJECTS: DragObject[] = [
   {
     id: "github",
     label: "GitHub hat",
-    src: "/github-hat.svg",
+    src: "/github-hat.png",
     w: 104,
     h: 68,
     theme: {
@@ -80,7 +80,7 @@ const OBJECTS: DragObject[] = [
   {
     id: "pepper",
     label: "Pepper cap",
-    src: "/pepper-cap.svg",
+    src: "/pepper-hat.png",
     w: 104,
     h: 68,
     theme: {
@@ -146,7 +146,7 @@ const OBJECTS: DragObject[] = [
   {
     id: "cap-1",
     label: "Propeller hat",
-    src: "/cap-1.svg",
+    src: "/testhat.png",
     w: 100,
     h: 65,
     theme: {
@@ -172,7 +172,8 @@ const OBJECTS: DragObject[] = [
   },
 ];
 
-const HEAD_RATIO = 0.15; // fraction down the cat image where the head sits
+const HEAD_RATIO = 0.19; // fraction down the cat image where the head sits
+const HEAD_X_OFFSET = -0.02; // fraction of cat width to nudge the head anchor (negative = left)
 const SNAP_RADIUS = 120; // px proximity to head that counts as a snap
 const snapSpring = spring({ stiffness: 140, damping: 16 });
 
@@ -279,7 +280,7 @@ export default function Home() {
       // Measure the image itself so the *visible* bottom-middle is the anchor.
       const o = (imgEl ?? el).getBoundingClientRect();
 
-      const headX = cat.left + cat.width / 2;
+      const headX = cat.left + cat.width / 2 + cat.width * HEAD_X_OFFSET;
       const headY = cat.top + cat.height * HEAD_RATIO;
 
       // Standardized anchor: bottom-middle of the image sits on the head.
@@ -300,7 +301,7 @@ export default function Home() {
       // pinned to the head point.
       if (imgEl) {
         animate(imgEl, {
-          scale: cat.width / 3 / obj.w,
+          scale: cat.width / 2.5 / obj.w,
           ease: snapSpring,
         });
       }

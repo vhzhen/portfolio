@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 130" width="200" height="130">
-  <path d="M50 96 C50 42 150 42 150 96 Z" fill="#38973b"/>
-  <path d="M150 96 C182 95 197 105 197 113 C197 120 164 120 150 113 Z" fill="#2d7a30"/>
-  <circle cx="100" cy="40" r="5" fill="#2d7a30"/>
-  <text x="98" y="82" font-family="monospace" font-size="26" font-weight="700" fill="#ffffff" text-anchor="middle">pepper</text>
-</svg>
