@@ -105,7 +105,7 @@ const OBJECTS: DragObject[] = [
   {
     id: "td",
     label: "TD cap",
-    src: "/td-cap.svg",
+    src: "/td-hat.png",
     w: 104,
     h: 68,
     theme: {
@@ -206,6 +206,23 @@ export default function Home() {
       setEquipped(null);
     }
   }, [hatsEnabled]);
+
+  // Trackpad overscroll on macOS reveals the html element's background past
+  // the document edges. Sync that background to the active theme so the
+  // rubber-band area blends with the gradient instead of flashing the
+  // default sunset/blue. Cleared on unmount → CSS default reapplies.
+  useEffect(() => {
+    const html = document.documentElement;
+    const theme = OBJECTS.find((o) => o.id === equipped)?.theme;
+    if (theme) {
+      html.style.backgroundImage = theme.gradient;
+    } else {
+      html.style.backgroundImage = "";
+    }
+    return () => {
+      html.style.backgroundImage = "";
+    };
+  }, [equipped]);
 
   // Warm the browser cache for the heavy fishing photo on page open so
   // equipping the hobbies hat is instant instead of waiting on a fetch.

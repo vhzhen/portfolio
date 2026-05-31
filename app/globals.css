@@ -51,12 +51,17 @@ html {
   background-attachment: fixed;
   background-size: cover;
   background-position: center;
+  /* Kill iOS Safari's rubber-band bounce so dragging past the edges
+     doesn't expose the html background (which clashes with the per-theme
+     gradient overlays). */
+  overscroll-behavior: none;
 }
 
 body {
   overflow-x: hidden;
   overflow-y: auto;
   background: transparent;
+  overscroll-behavior: none;
 }
 
 .btn {
