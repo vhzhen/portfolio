@@ -49,7 +49,12 @@ html {
   background-color: #96b9ff;
   background-image: url('/diamond-sunset-bg.svg');
   background-attachment: fixed;
-  background-size: cover;
+  /* The bg SVG uses width/height = 100% with no viewBox, so it has no
+     intrinsic size — `cover` then falls back to the CSS default object
+     size (300x150) on iOS Safari and the html bg-color bleeds through at
+     the safe-area corners on iPhones. Stretching to viewport (100% 100%)
+     forces the SVG to fill the entire painted area. */
+  background-size: 100% 100%;
   background-position: center;
   /* Kill iOS Safari's rubber-band bounce so dragging past the edges
      doesn't expose the html background (which clashes with the per-theme
