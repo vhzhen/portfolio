@@ -44,8 +44,8 @@
 
 html {
   /* The mobile overscroll ("rubber-band") area shows the html element's
-     background. #96B9FF is the colour at the bottom of the gradient, so
-     scrolling past the bottom blends instead of flashing white. */
+     background. #96B9FF is the background colour, so scrolling past the
+     edges blends instead of flashing white. */
   background-color: #96b9ff;
   background-image: url('/diamond-sunset-bg.svg');
   background-attachment: fixed;

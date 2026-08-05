@@ -456,7 +456,7 @@ export default function Home() {
       >
         <TransitionLink href="/td">
           <Button
-            className="btn border-white/25 bg-black/45 text-white backdrop-blur-md transition-transform duration-200 hover:scale-110 hover:bg-black/60 hover:text-white"
+            className="btn border-white/20 bg-white/5 text-white backdrop-blur-sm transition-transform duration-200 hover:scale-110 hover:bg-white/15 hover:text-white"
             variant="outline"
           >
             <Settings />
@@ -543,8 +543,7 @@ export default function Home() {
 
           <p
             key={`bio-${equipped ?? "default"}`}
-            className="glass-scrollbar m-4 max-w-[640px] px-4 text-center text-sm leading-relaxed transition-colors sm:text-base md:h-[clamp(5rem,16vh,8rem)] md:overflow-auto"
-            style={{ color: activeTheme ? "rgba(255,255,255,0.9)" : "inherit" }}
+            className="glass-scrollbar m-4 max-w-[640px] px-4 text-center text-sm leading-relaxed text-white transition-colors sm:text-base md:h-[clamp(5rem,16vh,8rem)] md:overflow-auto"
           >
             {activeTheme?.blurb ?? (
               <>
