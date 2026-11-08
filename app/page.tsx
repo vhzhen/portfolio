@@ -483,7 +483,7 @@ export default function Home() {
         <section className="flex w-full flex-col items-center justify-center px-4 pb-16 pt-10 font-mono md:w-[40%] md:pb-[clamp(6rem,14vh,8.5rem)] md:pt-6">
           <h1
             key={`head-${equipped ?? "default"}`}
-            className="mb-1 flex items-end justify-center text-center text-2xl font-bold tracking-tight transition-colors md:h-[clamp(2.75rem,8vh,4.5rem)] md:overflow-hidden md:[@media(max-height:760px)]:text-xl"
+            className="mb-1 flex items-end justify-center text-center text-base font-normal leading-relaxed transition-colors sm:text-lg md:h-[clamp(2.75rem,8vh,4.5rem)] md:overflow-hidden"
             style={{ color: activeTheme ? "#ffffff" : "inherit" }}
           >
             {activeTheme?.heading ?? " "}
