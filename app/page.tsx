@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Github, FileText, Code, Mail, Settings } from "lucide-react";
 import { TransitionLink } from "./components/PageTransition";
 import TdChart from "./components/TdChart";
+import HatOutline from "./components/HatOutline";
 import EtlPipeline from "./components/EtlPipeline";
 import ScrapeDemo from "./components/ScrapeDemo";
 import { GithubProjects, GithubPreview } from "./components/GithubPanels";
@@ -175,6 +176,7 @@ const OBJECTS: DragObject[] = [
 const HEAD_RATIO = 0.19; // fraction down the cat image where the head sits
 const HEAD_X_OFFSET = -0.02; // fraction of cat width to nudge the head anchor (negative = left)
 const SNAP_RADIUS = 120; // px proximity to head that counts as a snap
+const HAT_CAT_RATIO = 1 / 2.5; // snapped hat width as a fraction of the cat's width
 const snapSpring = spring({ stiffness: 140, damping: 16 });
 
 export default function Home() {
@@ -317,12 +319,12 @@ export default function Home() {
       const targetX = drag.x + dx;
       const targetY = drag.y + dy;
 
-      // Scale the hat to ~1/3 of the cat's width. transform-origin is
+      // Scale the hat to HAT_CAT_RATIO of the cat's width. transform-origin is
       // bottom-center (origin-bottom), so scaling keeps the bottom-middle
       // pinned to the head point.
       if (imgEl) {
         animate(imgEl, {
-          scale: cat.width / 2.5 / obj.w,
+          scale: (cat.width * HAT_CAT_RATIO) / obj.w,
           ease: snapSpring,
         });
       }
@@ -570,6 +572,18 @@ export default function Home() {
           </div>
         </section>
       </div>
+
+      {/* Dotted hat outline over the cat's head: shows where hats can be
+          dropped. Fades out once a hat is equipped. */}
+      {hatsEnabled && (
+        <HatOutline
+          catRef={catRef}
+          visible={!equipped}
+          headRatio={HEAD_RATIO}
+          headXOffset={HEAD_X_OFFSET}
+          hatToCatRatio={HAT_CAT_RATIO}
+        />
+      )}
 
       {/* Object tray — desktop only; mobile gets a plain scrollable page.
           Hidden entirely when the viewport is too short for the feature. */}
