@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Github, FileText, Code, Mail, Settings } from "lucide-react";
+import { Github, FileText, Linkedin, Mail, Settings } from "lucide-react";
 import { TransitionLink } from "./components/PageTransition";
 import TdChart from "./components/TdChart";
 import HatOutline from "./components/HatOutline";
@@ -531,11 +531,14 @@ export default function Home() {
               className="btn border-white/20 bg-white/5 text-white backdrop-blur-sm transition-transform duration-200 hover:scale-110 hover:bg-white/15 hover:text-white"
               variant="outline"
               onClick={() =>
-                window.open("https://devpost.com/vincentzhen2006", "_blank")
+                window.open(
+                  "https://www.linkedin.com/in/vincent-zhen-190885351/",
+                  "_blank",
+                )
               }
             >
-              <Code />
-              Devpost
+              <Linkedin />
+              LinkedIn
             </Button>
             <Button
               className="btn border-white/20 bg-white/5 text-white backdrop-blur-sm transition-transform duration-200 hover:scale-110 hover:bg-white/15 hover:text-white"
