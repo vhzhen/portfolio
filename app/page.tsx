@@ -217,10 +217,14 @@ export default function Home() {
     if (theme) {
       html.style.backgroundImage = theme.gradient;
     } else {
-      html.style.backgroundImage = "";
+      // Default view is a flat colour: hide the CSS-default SVG pattern and
+      // match the overscroll/safe-area edges to the scene colour.
+      html.style.backgroundImage = "none";
+      html.style.backgroundColor = "#96b9ff";
     }
     return () => {
       html.style.backgroundImage = "";
+      html.style.backgroundColor = "";
     };
   }, [equipped]);
 
@@ -430,7 +434,7 @@ export default function Home() {
     <div
       ref={sceneRef}
       className="relative flex min-h-screen w-full flex-row items-start justify-center overflow-y-auto md:h-screen md:items-center md:overflow-hidden"
-      style={{ backgroundImage: "url('/diamond-sunset-bg.svg')" }}
+      style={{ backgroundColor: "#96b9ff" }}
     >
       {/* One static layer per theme — only the active one is opaque, so
           swapping or removing a hat crossfades instead of hard-cutting. */}

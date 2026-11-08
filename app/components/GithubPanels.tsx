@@ -10,14 +10,14 @@ export const PROJECTS: { name: string; desc: string; href: string }[] = [
     href: "https://github.com/vhzhen/portfolio",
   },
   {
-    name: "Patient Intake Form",
-    desc: "A modern, full-stack patient intake application built with Next.js, GraphQL, and Supabase.",
-    href: "https://github.com/vhzhen/Patient-Intake-Form",
+    name: "notifco",
+    desc: "Discord bot that DMs you within a minute when a full UWaterloo course section opens a seat, hours faster than UWFlow.",
+    href: "https://github.com/vhzhen/notifco",
   },
   {
-    name: "Audiage",
-    desc: "Award winning IgnitionHacks project. Software targeted to prevent hearing loss. ",
-    href: "https://github.com/vhzhen/audiage",
+    name: "WatBal",
+    desc: "Flutter app that tracks UWaterloo WatCard balances and transactions, with meal plan pacing and home-screen widgets that refresh in the background.",
+    href: "https://github.com/vhzhen/watbal-flutter",
   },
   {
     name: "Robo Stock Portfolio Advisor",
@@ -39,13 +39,17 @@ const TOOLS: Record<string, Tool[]> = {
     { label: "shadcn/ui", slug: "shadcnui" },
     { label: "anime.js" },
   ],
-  "Patient Intake Form": [
-    { label: "Next.js", slug: "nextdotjs" },
-    { label: "TypeScript", slug: "typescript" },
-    { label: "GraphQL", slug: "graphql" },
-    { label: "Supabase", slug: "supabase" },
-    { label: "Tailwind CSS", slug: "tailwindcss" },
-    { label: "shadcn/ui", slug: "shadcnui" },
+  notifco: [
+    { label: "Discord", slug: "discord" },
+    { label: "Redis", slug: "redis" },
+    { label: "PostgreSQL", slug: "postgresql" },
+    { label: "Prometheus", slug: "prometheus" },
+  ],
+  WatBal: [
+    { label: "Flutter", slug: "flutter" },
+    { label: "Dart", slug: "dart" },
+    { label: "SwiftUI", slug: "swift" },
+    { label: "Android", slug: "android" },
   ],
   "Robo Stock Portfolio Advisor": [
     { label: "Python", slug: "python" },
@@ -53,17 +57,6 @@ const TOOLS: Record<string, Tool[]> = {
     { label: "NumPy", slug: "numpy" },
     { label: "yfinance" },
     { label: "Matplotlib" },
-  ],
-  Audiage: [
-    { label: "Next.js", slug: "nextdotjs" },
-    { label: "TypeScript", slug: "typescript" },
-    { label: "Chakra UI", slug: "chakraui" },
-    { label: "Python", slug: "python" },
-    { label: "NumPy", slug: "numpy" },
-    { label: "SciPy", slug: "scipy" },
-    { label: "Tkinter" },
-    { label: "Matplotlib" },
-    { label: "librosa" },
   ],
 };
 
@@ -137,7 +130,8 @@ export function GithubProjects() {
 
 // Local preview images — takes priority over the GitHub opengraph fetch.
 const LOCAL_PREVIEWS: Record<string, string> = {
-  "Patient Intake Form": "/patient-intake-form.png",
+  notifco: "/notifco.png",
+  WatBal: "/watbal.png",
 };
 
 /** GitHub repo social image, with a graceful fallback if it fails. */
@@ -150,7 +144,7 @@ function RepoImage({ repo, name }: { repo: string | null; name: string }) {
       <img
         src={local}
         alt={`${name} preview`}
-        className="aspect-[2/1] w-full bg-black/40 object-cover"
+        className="aspect-[2/1] w-full bg-black/40 object-cover object-top"
       />
     );
   }
