@@ -157,8 +157,7 @@ const OBJECTS: DragObject[] = [
       heading: "Hobbies",
       blurb: (
         <>
-          Off work, you might find me Minecraft speedrunning, surviving in Dead
-          by Daylight, or out fishing.
+          Off work, you might find me playing video games or out fishing.
         </>
       ),
       side: <FishingGame />,
@@ -177,6 +176,9 @@ const HEAD_RATIO = 0.19; // fraction down the cat image where the head sits
 const HEAD_X_OFFSET = -0.02; // fraction of cat width to nudge the head anchor (negative = left)
 const SNAP_RADIUS = 120; // px proximity to head that counts as a snap
 const HAT_CAT_RATIO = 1 / 2.5; // snapped hat width as a fraction of the cat's width
+// Home (no hat) background: slightly darker blue fading into #96b9ff.
+const DEFAULT_GRADIENT =
+  "linear-gradient(160deg, #6b93e8 0%, #82a8f8 55%, #96b9ff 100%)";
 const snapSpring = spring({ stiffness: 140, damping: 16 });
 
 export default function Home() {
@@ -219,9 +221,9 @@ export default function Home() {
     if (theme) {
       html.style.backgroundImage = theme.gradient;
     } else {
-      // Default view is a flat colour: hide the CSS-default SVG pattern and
-      // match the overscroll/safe-area edges to the scene colour.
-      html.style.backgroundImage = "none";
+      // Default view is a flat gradient: replace the CSS-default SVG pattern
+      // and match the overscroll/safe-area edges to the scene.
+      html.style.backgroundImage = DEFAULT_GRADIENT;
       html.style.backgroundColor = "#96b9ff";
     }
     return () => {
@@ -436,7 +438,7 @@ export default function Home() {
     <div
       ref={sceneRef}
       className="relative flex min-h-screen w-full flex-row items-start justify-center overflow-y-auto md:h-screen md:items-center md:overflow-hidden"
-      style={{ backgroundColor: "#96b9ff" }}
+      style={{ backgroundImage: DEFAULT_GRADIENT }}
     >
       {/* One static layer per theme — only the active one is opaque, so
           swapping or removing a hat crossfades instead of hard-cutting. */}
