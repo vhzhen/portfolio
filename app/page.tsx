@@ -7,6 +7,7 @@ import TdChart from "./components/TdChart";
 import HatOutline from "./components/HatOutline";
 import EtlPipeline from "./components/EtlPipeline";
 import ScrapeDemo from "./components/ScrapeDemo";
+import MascotRoom from "./components/mascots/MascotRoom";
 import { GithubProjects, GithubPreview } from "./components/GithubPanels";
 import {
   FishingGame,
@@ -140,6 +141,70 @@ const OBJECTS: DragObject[] = [
             "// Visual Basic → Python",
             "Rewrote the ETF parser in Python. Enriched with Bloomberg API error checking and SQL logging.",
           )}
+        </div>
+      ),
+    },
+  },
+  {
+    // WIP: temporary hat art in /public/carta-hat.svg.
+    id: "carta",
+    label: "Carta cap",
+    src: "/carta-hat.svg",
+    w: 104,
+    h: 68,
+    theme: {
+      title: "📊",
+      gradient:
+        "linear-gradient(160deg, #0b0c10 0%, #1c2230 55%, #2f4858 100%)",
+      heading: "Software Engineer @ Carta",
+      blurb: (
+        <>
+          Building cap table infrastructure with Python, Django, Kafka, gRPC,
+          Redis and PostgreSQL, from the share accounting engine to the data
+          behind Carta&apos;s MCP.
+        </>
+      ),
+      side: highlight(
+        "// carta",
+        "Cap table infrastructure on Python, Django, Kafka and gRPC.",
+      ),
+      sideLeft: (
+        <div className="flex flex-col gap-3">
+          {highlight(
+            "// cap table pipeline",
+            "Kafka + Django pipeline computing 60,000+ cap tables daily into PostgreSQL materialized views, fixing an N+1 query to power Carta's MCP.",
+          )}
+          {highlight(
+            "// share accounting engine",
+            "Rebuilt with gRPC, Kubernetes and Redis over 20M certificates and 31M vesting events. Slowest 5% of loads: 250 ms → 40 ms across 5M weekly loads.",
+          )}
+          {highlight(
+            "// compliance dashboard",
+            "React + Redux pilot tracking Rule 701 grant limits and QSBS holding periods across 500 companies, flagging at-risk issuances.",
+          )}
+        </div>
+      ),
+      sideRight: (
+        <div className="rounded-lg border border-white/15 bg-white/5 p-3 text-left backdrop-blur-sm">
+          <div className="mb-2 flex items-center justify-between">
+            <p className="font-mono text-xs uppercase tracking-widest text-white/70">
+              {"// evergreen"}
+            </p>
+            <a
+              href="https://evergreen.carta.com/"
+              target="_blank"
+              rel="noreferrer"
+              className="font-mono text-[11px] text-emerald-300/80 underline-offset-2 hover:underline"
+            >
+              evergreen.carta.com ↗
+            </a>
+          </div>
+          <MascotRoom />
+          <p className="mt-2 text-[11px] leading-snug text-white/55">
+            Sprouts are the mascots of Evergreen, Carta&apos;s multiplayer coding platform where people and
+            agents ship together. As an early adopter, I shipped bug fixes and
+            UI changes that shaped it early on.
+          </p>
         </div>
       ),
     },

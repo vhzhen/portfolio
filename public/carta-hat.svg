@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1000" width="1920" height="1000">
+  <!-- TEMPORARY Carta cap (wip). Same silhouette and 1920x1000 box as the
+       other caps so the snap and the dotted outline line up. Replace with
+       real art before merging. -->
+  <defs>
+    <linearGradient id="crown" x1="0" y1="0" x2="1" y2="0.35">
+      <stop offset="0" stop-color="#3a3f4b"/>
+      <stop offset="0.55" stop-color="#1e2129"/>
+      <stop offset="1" stop-color="#0d0f14"/>
+    </linearGradient>
+    <linearGradient id="brim" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2a2e38"/>
+      <stop offset="1" stop-color="#050608"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#crown)" d="M 28 818 C 150 730 260 665 375 603 C 400 520 430 450 475 385 C 560 290 650 210 745 140 C 870 70 1000 42 1120 42 C 1300 45 1450 100 1555 172 C 1680 280 1760 390 1815 478 C 1855 600 1875 780 1880 962 L 1868 966 C 1800 880 1740 825 1675 775 C 1560 830 1480 836 1410 832 C 1330 826 1260 800 1210 770 C 1050 665 890 632 710 635 C 500 640 300 720 55 822 Z"/>
+  <path fill="url(#brim)" d="M 28 818 C 150 730 260 665 375 603 C 600 540 760 515 880 513 C 1150 515 1450 600 1675 775 C 1560 830 1480 836 1410 832 C 1330 826 1260 800 1210 770 C 1050 665 890 632 710 635 C 500 640 300 720 55 822 Z"/>
+  <path fill="none" stroke="#ffffff" stroke-width="6" d="M 375 603 C 600 540 760 515 880 513 C 1150 515 1450 600 1675 775"/>
+  <text x="1010" y="400" text-anchor="middle" fill="#ffffff" font-family="Helvetica, Arial, sans-serif" font-size="230" font-weight="700" letter-spacing="-6" transform="rotate(-3 1010 400)">carta</text>
+</svg>
